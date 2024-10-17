@@ -1,8 +1,8 @@
 # Technical Report
 
 **Project: {insert project name}**  
-**Members: {insert project members}**  
-Last updated on {last updated date}
+**Members: Bernice Ong Hwee Yee, Cao Han, Luo Xinming, Su Xuanxuan, Yang Shu Ting**  
+Last updated on 17/10/2024
 
 ## Section 1: Context
 
