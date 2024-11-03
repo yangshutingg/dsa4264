@@ -63,9 +63,31 @@ def process_metrics(filepath):
     except Exception as e:
         st.error(f"Error processing data: {str(e)}")
         return None
+    
+@st.cache_data
+def load_time_metrics(processed_data_dir='data'):
+    """Load preprocessed time metrics"""
+    try:
+        hourly_metrics = pd.read_csv(f"{processed_data_dir}/hourly_metrics.csv")
+        daily_metrics = pd.read_csv(f"{processed_data_dir}/daily_metrics.csv")
+        peak_hours = pd.read_csv(f"{processed_data_dir}/peak_hours.csv")
+        
+        return {
+            'hourly': hourly_metrics,
+            'daily': daily_metrics,
+            'peaks': peak_hours
+        }
+    except Exception as e:
+        st.error(f"Error loading time metrics: {str(e)}")
+        return None
 
 # Load and process data
 metrics = process_metrics('data/monthly_summary.csv')
+time_metrics = load_time_metrics()
+
+# Load and process data
+metrics = process_metrics('data/monthly_summary.csv')
+time_metrics = load_time_metrics()
 
 st.title("🔍 Reddit Toxicity Analysis Dashboard")
 
@@ -162,15 +184,50 @@ with col2:
 st.markdown("---")
 col1, col2, col3 = st.columns(3)
 
-with col1:
-    st.error("🔍 **Peak Hours**\n\nComing Soon\n(Requires timestamp analysis)")
+if time_metrics:
+    # Peak Hours
+    peak_posts = time_metrics['peaks'][time_metrics['peaks']['metric'] == 'posts'].iloc[0]
+    with col1:
+        st.error(
+            f"🔍 **Peak Hours**\n\n"
+            f"Most Active: {int(peak_posts['peak_hour']):02d}:00  \n"
+            f"Posts: {int(peak_posts['peak_value']):,}\n\n"
+            f"Least Active: {int(peak_posts['lowest_hour']):02d}:00  \n"
+            f"Posts: {int(peak_posts['lowest_value']):,}"
+        )
 
-with col2:
-    st.warning("📅 **Most Active Day**\n\nComing Soon\n(Requires timestamp analysis)")
+    # Most Active Day
+    most_active_day = time_metrics['daily'].loc[time_metrics['daily']['post_count'].idxmax()]
+    with col2:
+        st.warning(
+            f"📅 **Most Active Day**\n\n"
+            f"{most_active_day['day']}  \n"
+             "\n"
+            f"Posts: {int(most_active_day['post_count']):,}  \n"
+             "\n"
+            f"({most_active_day['post_percent']:.1f}% of total posts)"
+        )
 
-with col3:
-    st.success("✨ **Healthiest Topics**\n\nComing Soon\n(Requires topic analysis)")
+    # Add time-based toxicity insights
+    peak_toxicity = time_metrics['peaks'][time_metrics['peaks']['metric'] == 'toxicity'].iloc[0]
+    with col3:
+        st.success(
+            f"⏰ **Activity Patterns**\n\n"
+            f"Highest Toxicity: {int(peak_toxicity['peak_hour']):02d}:00  \n"
+            f"Score: {peak_toxicity['peak_value']:.3f}\n\n"
+            f"Lowest Toxicity: {int(peak_toxicity['lowest_hour']):02d}:00  \n"
+            f"Score: {peak_toxicity['lowest_value']:.3f}"
+        )
 
+else:
+    # Fallback if time metrics aren't available
+    with col1:
+        st.error("🔍 **Peak Hours**\n\nData not available")
+    with col2:
+        st.warning("📅 **Most Active Day**\n\nData not available")
+    with col3:
+        st.success("⏰ **Activity Patterns**\n\nData not available")
+        
 # Navigation footer
 st.markdown("---")
 st.markdown("""
