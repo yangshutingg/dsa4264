@@ -8,8 +8,12 @@ import numpy as np
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv('../data/processed/monthly_summary.csv')
-        df['date'] = pd.to_datetime(df['date'])
+        df = pd.read_csv('../../../monthly_scores_summary.csv')
+        # df['date'] = pd.to_datetime(df['date'])
+        df['yearmonth'] = pd.to_datetime(df['yearmonth'])
+        df['date'] = df['yearmonth']
+        df['year'] = df['yearmonth'].dt.year
+        df['month'] = df['yearmonth'].dt.month
         return df
     except:
         # Generate sample data if file not found
@@ -46,15 +50,15 @@ helping inform policy decisions and content moderation strategies.
 """)
 
 # Get available subreddits from data
-available_subreddits = df['subreddit_id'].unique().tolist()
+# available_subreddits = df['subreddit_id'].unique().tolist()
 
 # Initialize session state if needed
 if 'time_range' not in st.session_state:
     st.session_state['time_range'] = "Last 1 year"
-if 'subreddits' not in st.session_state:
-    st.session_state['subreddits'] = [available_subreddits[0]]  # Use first available subreddit
-elif not all(sub in available_subreddits for sub in st.session_state['subreddits']):
-    st.session_state['subreddits'] = [available_subreddits[0]]
+# if 'subreddits' not in st.session_state:
+#     st.session_state['subreddits'] = [available_subreddits[0]]  # Use first available subreddit
+# elif not all(sub in available_subreddits for sub in st.session_state['subreddits']):
+#     st.session_state['subreddits'] = [available_subreddits[0]]
 
 # Callback functions for filters
 def on_time_range_change():
@@ -76,26 +80,30 @@ time_range = st.sidebar.selectbox(
 )
 
 # Year-Month filter
-years = sorted(df['year'].unique())
+# years = sorted(df['year'].unique())
+years = sorted(df['yearmonth'].dt.year.unique())
 selected_year = st.sidebar.selectbox("Select Year", years)
 
-months = sorted(df[df['year'] == selected_year]['month'].unique())
+# months = sorted(df[df['year'] == selected_year]['month'].unique())
+months = sorted(df[df['yearmonth'].dt.year == selected_year]['yearmonth'].dt.month.unique())
 selected_month = st.sidebar.selectbox("Select Month", months)
 
 # Subreddit filter using session state
-selected_subreddits = st.sidebar.multiselect(
-    "Select Subreddits",
-    options=available_subreddits,
-    default=st.session_state['subreddits'],
-    key='subreddit_widget',
-    on_change=on_subreddit_change
-)
+# selected_subreddits = st.sidebar.multiselect(
+#     "Select Subreddits",
+#     options=available_subreddits,
+#     default=st.session_state['subreddits'],
+#     key='subreddit_widget',
+#     on_change=on_subreddit_change
+# )
 
 # Filter data based on selections
 df_filtered = df[
     (df['year'] == selected_year) & 
-    (df['month'] == selected_month) & 
-    (df['subreddit_id'].isin(selected_subreddits))
+    (df['month'] == selected_month) # & 
+    # (df['subreddit_id'].isin(selected_subreddits))
+    # (df['yearmonth'].dt.year == selected_year) &
+    # (df['yearmonth'].dt.month == selected_month)
 ]
 
 # Replace the current metrics columns with:
@@ -113,13 +121,13 @@ with col1:
         help="Change in toxicity compared to previous period"
     )
 
-with col2:
-    moderation_impact = df_filtered['moderation_rate'].mean() * 100
-    st.metric(
-        label="Moderation Coverage",
-        value=f"{moderation_impact:.1f}%",
-        help="Percentage of content receiving moderation"
-    )
+# with col2:
+#     moderation_impact = df_filtered['moderation_rate'].mean() * 100
+#     st.metric(
+#         label="Moderation Coverage",
+#         value=f"{moderation_impact:.1f}%",
+#         help="Percentage of content receiving moderation"
+#     )
 
 with col3:
     total_posts = df_filtered['post_count'].sum()
@@ -148,20 +156,64 @@ with tab1:
         line=dict(color='red', width=2)
     ))
     
+    # Calculate dynamic threshold as 150% of the previous month’s value
+    df['threshold'] = df['average_toxicity_score_mean'].shift(1) * 1.5
+
+    # Find the points that exceed the dynamic threshold
+    exceed_threshold = df['average_toxicity_score_mean'] > df['threshold']
+
+    # Circle values that exceed the threshold
+    fig_time.add_trace(go.Scatter(
+        x=df['date'][exceed_threshold], 
+        y=df['average_toxicity_score_mean'][exceed_threshold],
+        mode='markers',
+        name='Abnormal change',
+        marker=dict(color='blue', size=10, symbol='circle-open', line=dict(color='blue', width=2))
+    ))
+
+    # Set y-axis range if needed
+    fig_time.update_yaxes(range=[0, 0.1])
+
     fig_time.update_layout(
         title='Toxicity Trend Over Time',
-        yaxis_title='Toxicity Level',
+        yaxis_title='Average Toxicity Level',
         hovermode='x unified'
     )
     st.plotly_chart(fig_time, use_container_width=True)
     
-    # Add post volume as context
-    fig_volume = px.line(
-        df,
-        x='date',
-        y='post_count',
-        title='Discussion Volume Over Time'
+
+    # Time series of post count
+    fig_volume = go.Figure()
+    fig_volume.add_trace(go.Scatter(
+        x=df['date'],
+        y=df['post_count'],
+        line=dict(color='lightblue', width=2)
+    ))
+    
+    # Calculate dynamic threshold as 150% of the previous month’s value
+    df['threshold2'] = df['post_count'].shift(1) * 1.5
+
+    # Find the points that exceed the dynamic threshold
+    exceed_threshold2 = df['post_count'] > df['threshold2']
+
+    # Circle values that exceed the threshold
+    fig_volume.add_trace(go.Scatter(
+        x=df['date'][exceed_threshold2], 
+        y=df['post_count'][exceed_threshold2],
+        mode='markers',
+        name='Abnormal change',
+        marker=dict(color='red', size=10, symbol='circle-open', line=dict(color='blue', width=2))
+    ))
+
+    # Set y-axis range if needed
+    fig_volume.update_yaxes(range=[0, 200000])
+
+    fig_volume.update_layout(
+        title='Post Count Over Time',
+        yaxis_title='Post Count',
+        hovermode='x unified'
     )
+    
     st.plotly_chart(fig_volume, use_container_width=True)
 
 with tab2:
@@ -180,19 +232,19 @@ with tab2:
         )
         st.plotly_chart(fig_models, use_container_width=True)
     
-    with col2:
-        # Moderation impact
-        fig_mod = px.scatter(
-            df_filtered,
-            x='moderation_rate',
-            y='average_toxicity_score_mean',
-            title='Impact of Moderation on Toxicity',
-            labels={
-                'moderation_rate': 'Moderation Coverage',
-                'average_toxicity_score_mean': 'Toxicity Level'
-            }
-        )
-        st.plotly_chart(fig_mod, use_container_width=True)
+    # with col2:
+    #     # Moderation impact
+    #     fig_mod = px.scatter(
+    #         df_filtered,
+    #         x='moderation_rate',
+    #         y='average_toxicity_score_mean',
+    #         title='Impact of Moderation on Toxicity',
+    #         labels={
+    #             'moderation_rate': 'Moderation Coverage',
+    #             'average_toxicity_score_mean': 'Toxicity Level'
+    #         }
+    #     )
+    #     st.plotly_chart(fig_mod, use_container_width=True)
 
 with tab3:
     st.subheader("Recommended Actions")
@@ -238,28 +290,45 @@ st.header("Key Findings")
 with st.expander("See detailed insights"):
     most_toxic_period = df.loc[df['average_toxicity_score_mean'].idxmax()]
     
+    # st.write("""
+    # ### Summary of Findings
+    
+    # **1. Toxicity Trends**
+    # - Overall toxicity has increased by {:.1f}% compared to the previous period
+    # - Peak toxicity occurs during evening hours (8 PM - 11 PM)
+    # - Moderated content shows {:.1f}% lower toxicity levels
+    
+    # **2. Key Observations**
+    # - High-activity periods show increased toxicity
+    # - Moderation is most effective when applied early
+    # - Community engagement helps reduce toxic content
+    
+    # **3. Recommendations**
+    # - Increase moderation coverage during peak hours
+    # - Implement proactive monitoring for high-risk topics
+    # - Develop community guidelines for sensitive discussions
+    # """.format(
+    #     percent_change,
+    #     (1 - df_filtered[df_filtered['moderation_rate'] > 0.5]['average_toxicity_score_mean'].mean() / 
+    #     df_filtered[df_filtered['moderation_rate'] <= 0.5]['average_toxicity_score_mean'].mean()) * 100
+    # ))
+
     st.write("""
     ### Summary of Findings
     
     **1. Toxicity Trends**
     - Overall toxicity has increased by {:.1f}% compared to the previous period
     - Peak toxicity occurs during evening hours (8 PM - 11 PM)
-    - Moderated content shows {:.1f}% lower toxicity levels
     
     **2. Key Observations**
     - High-activity periods show increased toxicity
-    - Moderation is most effective when applied early
     - Community engagement helps reduce toxic content
     
     **3. Recommendations**
-    - Increase moderation coverage during peak hours
     - Implement proactive monitoring for high-risk topics
     - Develop community guidelines for sensitive discussions
     """.format(
-        percent_change,
-        (1 - df_filtered[df_filtered['moderation_rate'] > 0.5]['average_toxicity_score_mean'].mean() / 
-         df_filtered[df_filtered['moderation_rate'] <= 0.5]['average_toxicity_score_mean'].mean()) * 100
-    ))
+        percent_change))
 
 # Add navigation back to overview
 st.sidebar.markdown("---")
