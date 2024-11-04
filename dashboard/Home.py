@@ -156,7 +156,7 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.info(
-        "📊 **Total Posts**\n\n"
+        "📈 **Total Posts**\n\n"
         f"{metrics['total_posts']['value']:,.0f}\n\n"
         f"vs {metrics['dates']['previous_month']}: {metrics['total_posts']['change']:+.1f}%"
     )
@@ -169,11 +169,20 @@ with col2:
     )
 
 with col3:
-    st.error(
-        "🎯 **Highest Model Score**\n\n"
-        f"{metrics['highest_model_score']['value']:.3f}\n\n"
-        f"Model: {metrics['highest_model_score']['model']}"
+    health_score = 100 - metrics['average_toxicity']['value']*100
+    health_change = -metrics['average_toxicity']['change']
+    st.success(
+        "📊 **Community Health Score**\n\n"
+        f"{health_score:.1f}/100\n\n"
+        f"vs {metrics['dates']['previous_month']}: {health_change:+.1f}%"
     )
+
+# Add footnote explaining Community Health Score
+st.markdown("""
+<div style='font-size: 0.8em; color: gray; margin-top: -10px; text-align: right;'>
+* Community Health Score: Higher score indicates healthier discussions. Score above 70 indicates a healthy community.
+</div>
+""", unsafe_allow_html=True)
 
 # Topic Analysis Section (placeholder for now)
 st.markdown("---")
