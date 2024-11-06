@@ -119,6 +119,14 @@ Coherence score is a metric that measures the semantic similarity of the most re
 
 *Interpretability methods like LIME or SHAP should also be reported here, using the appropriate tables or charts.*
 
+Our results show that the representation model in BERTopic has slightly better performance than BERTopic, with overall coherence score of 0.38. 
+| Model               | Coherence Score |
+| :---                | :----:          |
+| BERTopic            | 0.33            | 
+| Representation Model|0.38             |
+From our results, common themes like “crime”, “LGBTQ”, “politics”, “immigration” and “race” is frequently associated with high toxicity scores. Surprisingly, seemingly benign words related to families such as “marriage”, “parenthood” and “pregnancy”. Overall, the 3 Subreddits have seen an increase in toxicity from 2020 to 2023, with a large spike in toxicity score in October 2023. 
+
+
 ### 4.2 Discussion
 
 *In this subsection, you should discuss what the results mean for the business user – specifically how the technical metrics translate into business value and costs, and whether this has sufficiently addressed the business problem.*
