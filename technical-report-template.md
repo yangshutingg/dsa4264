@@ -86,6 +86,12 @@ The dataset, although complete for comment texts, contains linguistic variations
 * *Features: What feature engineering did you do? Was anything dropped?*
 * *Splitting: How did you split the data between training and test sets?*
 
+The data for this project comprises Reddit comments from Singapore-specific subreddits such as r/Singapore, r/SingaporeRaw, and r/SingaporeHappenings. Data was collected through Reddit's API, focusing on posts and comments within a specified timeframe to track toxicity trends over recent years. For each comment, metadata such as the timestamp, username, subreddit ID, and moderation status were collected, although the actual analysis will focus primarily on the text content.
+
+Data cleaning involved standard preprocessing steps to ensure consistency and readability for NLP models. We removed stop words, special characters, URLs, and non-relevant metadata. Additionally, comments that were removed or deleted were excluded, as they do not contain usable text data. Any mixed-language content was processed through tokenization and embedding steps to address linguistic variations and slang common in online discussions. Outliers, such as extremely short or long comments, were reviewed to prevent skewing the model's training data.
+
+Feature engineering focused on extracting linguistic patterns and toxic terms, with sentiment analysis and basic frequency analysis conducted as initial exploratory steps. Only the text feature was retained for toxicity scoring and topic modelling. For model training, the data was split into training, validation, and test sets to evaluate model performance consistently.
+
 ### 3.3 Experimental Design
 
 *In this subsection, you should clearly explain the key steps of your model development process, such as:*
@@ -96,6 +102,14 @@ The dataset, although complete for comment texts, contains linguistic variations
 - Why we chose HateBERT, HateXplain, ToxicBert -> why average the score
 - Why we chose BERTopic instead of LDA -> why we choose certain parameters in BERTopic
     - evaluate by coherence score, quality of topics
+
+Our model development process involved experimenting with various NLP algorithms to detect toxicity and uncover topic trends across Reddit comments. Given our focus on detecting nuanced language patterns and toxic behaviour, we chose transformer-based models such as HateBERT, HateXplain, and ToxicBERT, which are pre-trained specifically for handling toxic language. These models were selected based on their ability to handle the complexities of online discourse, including slang, sarcasm, and mixed languages. In addition, averaging the toxicity scores across these three models provides a more reliable estimate, reducing biases associated with any one model’s classification tendencies.
+
+For topic modelling, we opted for BERTopic instead of more traditional algorithms like Latent Dirichlet Allocation (LDA). BERTopic was chosen because it leverages transformer-based embeddings, allowing it to capture contextual nuances and generate coherent topics from unstructured text. This approach was particularly valuable for identifying the thematic trends that contribute to online toxicity in Singapore-specific subreddits. Additionally, BERTopic’s dynamic topic extraction allows us to analyze the evolution of toxic discourse over time. 
+
+We have also tuned the BERTopic parameters to optimize for coherence score, a metric that assesses the quality and interpretability of topics generated. Coherence score evaluation provided a quantitative measure of topic quality, allowing us to iterate on parameters to refine topic clarity and relevance.
+
+Coherence score is a metric that measures the semantic similarity of the most relevant words within each topic, assessing how well these words make sense together in representing a coherent theme. A high coherence score indicates that the topic's keywords are closely related and are likely to convey a meaningful, interpretable theme, which is crucial for real-world applications like identifying discussion trends in social media data. By optimizing for coherence score, we aim to ensure that the extracted topics are both meaningful and useful for subsequent analysis, enhancing the reliability of insights derived from the model.
 
 ## Section 4: Findings
 
