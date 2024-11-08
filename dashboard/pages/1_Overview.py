@@ -3,7 +3,7 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+# from datetime import datetime, timedelta
 
 # Generate sample data for demonstration
 @st.cache_data
@@ -31,6 +31,16 @@ def generate_sample_data():
     
     return data, topic_data
 
+@st.cache_data
+def load_data():
+    try:
+        df = pd.read_csv('data/monthly_summary.csv')
+        df['date'] = pd.to_datetime(df['date'])
+        return df
+    except:
+        # Generate sample data if file not found
+        return generate_sample_data()
+
 # Load sample data
 data, topic_data = generate_sample_data()
 
@@ -45,34 +55,34 @@ st.sidebar.header("Filters")
 # Instead of setting session state after selection, initialize it first
 
 # Initialize session state if needed
-if 'time_range' not in st.session_state:
-    st.session_state['time_range'] = "Last 1 year"
-if 'subreddits' not in st.session_state:
-    st.session_state['subreddits'] = ["r/Singapore"]
+# if 'time_range' not in st.session_state:
+#     st.session_state['time_range'] = "Last 1 year"
+# if 'subreddits' not in st.session_state:
+#     st.session_state['subreddits'] = ["r/Singapore"]
 
-# Use session state in the selectbox
-time_range = st.sidebar.selectbox(
-    "Time Range",
-    ["Last 6 months", "Last 1 year", "Last 2 years", "All time"],
-    index=["Last 6 months", "Last 1 year", "Last 2 years", "All time"].index(st.session_state['time_range'])
-)
+# # Use session state in the selectbox
+# time_range = st.sidebar.selectbox(
+#     "Time Range",
+#     ["Last 6 months", "Last 1 year", "Last 2 years", "All time"],
+#     index=["Last 6 months", "Last 1 year", "Last 2 years", "All time"].index(st.session_state['time_range'])
+# )
 
 # Update session state through callback
-if time_range != st.session_state['time_range']:
-    st.session_state['time_range'] = time_range
+# if time_range != st.session_state['time_range']:
+#     st.session_state['time_range'] = time_range
 
 # Similarly for subreddit selection
-subreddit = st.sidebar.multiselect(
-    "Subreddit",
-    ["r/Singapore", "r/SingaporeRaw", "r/SingaporeHappenings"],
-    default=st.session_state['subreddits']
-)
+# subreddit = st.sidebar.multiselect(
+#     "Subreddit",
+#     ["r/Singapore", "r/SingaporeRaw", "r/SingaporeHappenings"],
+#     default=st.session_state['subreddits']
+# )
 
-if subreddit != st.session_state['subreddits']:
-    st.session_state['subreddits'] = subreddit
+# if subreddit != st.session_state['subreddits']:
+#     st.session_state['subreddits'] = subreddit
 
 # Store in session state for other pages
-st.session_state['time_range'] = time_range
+# st.session_state['time_range'] = time_range
 
 
 # Create three columns for metrics
