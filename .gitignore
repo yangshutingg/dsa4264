@@ -1,5 +1,6 @@
 .venv
 
 data/*
+dashboard/graphs*
 
 .DS_Store
