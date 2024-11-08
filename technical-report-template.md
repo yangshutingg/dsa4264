@@ -86,6 +86,12 @@ The dataset, although complete for comment texts, contains linguistic variations
 * *Features: What feature engineering did you do? Was anything dropped?*
 * *Splitting: How did you split the data between training and test sets?*
 
+The data for this project comprises Reddit comments from Singapore-specific subreddits such as r/Singapore, r/SingaporeRaw, and r/SingaporeHappenings. Data was provided by MDDI, focusing on posts and comments from 2020 to 2023 to track toxicity trends over recent years. For each comment, metadata such as the timestamp, username, subreddit ID, and moderation status were given, although the actual analysis will focus primarily on the `text` content.
+
+To ensure a high-quality dataset, we performed several cleaning steps. We dropped rows with missing values and removed entries with deleted or removed comments, ensuring only usable data remained for analysis. In this project, we did not perform tokenisation as a separate step since we relied on pre-trained transformer models that automatically handle tokenisation as part of their processing. This allowed us to streamline the data processing pipeline and leverage the sophisticated tokenisation built into these models, ensuring that the text inputs were prepared in a way that optimises model performance and coherence analysis without requiring additional pre-processing. Several features were also engineered to enhance the data’s analytical value. Specifically, we extracted a `yearmonth` field from `timestamp` to analyse toxicity trends over time, isolated post titles from the link field for potential topic alignment, and added an `index` field as a unique identifier, simplifying the processing of data through our NLP models. The relevant code can be found in `src/data_processing.ipynb`.
+
+Rather than splitting the data, we applied pre-trained NLP models directly to the entire cleaned dataset to gain insights. To evaluate the topic modeling results, we used a sample of one month’s data (`2023-10`) to calculate the coherence score, ensuring our topic modeling maintained interpretability and consistency across topics. 
+
 ### 3.3 Experimental Design
 
 *In this subsection, you should clearly explain the key steps of your model development process, such as:*
@@ -97,6 +103,15 @@ The dataset, although complete for comment texts, contains linguistic variations
 - Why we chose BERTopic instead of LDA -> why we choose certain parameters in BERTopic
     - evaluate by coherence score, quality of topics
 
+Our model development process involved experimenting with various NLP algorithms to detect toxicity levels and uncover topic trends across Reddit comments. Given our focus on detecting nuanced language patterns and toxic behaviour, we chose transformer-based models such as HateBERT, HateXplain, and ToxicBERT, which are specifically fine-tuned for handling toxic language on social media and online forums, which closely aligns with the characteristics of our dataset. Reddit is known for its conversational, often informal, and sometimes contentious style of discussion, which these models are well-equipped to handle due to their training on similar datasets. These models were also selected based on their ability to handle the complexities of such online discourse, including slang, sarcasm, and mixed languages. The relevant codes can be found under `src/toxicity models`. In addition, averaging the toxicity scores across these three models provides a more reliable estimate, reducing biases associated with any one model’s classification tendencies. The implementation of the averaging can be found in `src/data_processing.ipynb`.
+
+
+For topic modelling, we opted for BERTopic instead of more traditional algorithms like Latent Dirichlet Allocation (LDA) to identify and analyse discussion topics within Reddit comments for each `yearmonth` across our dataset. By examining each `yearmonth` separately, we could observe how certain topics and themes evolved over time, enabling us to pinpoint when and where toxicity levels might have surged and uncover any patterns in discourse contributing to this increase. BERTopic was chosen because it leverages transformer-based embeddings, allowing it to capture contextual nuances and generate coherent topics from unstructured text. This approach was particularly valuable for identifying the thematic trends that contribute to online toxicity in Singapore-specific subreddits. The implementation can be found in `src/topic models/topic_modelling.ipynb`.
+
+
+To ensure the quality and relevance of the extracted topics, we used a coherence score as our evaluation metric. Coherence scores indicate the degree to which the words within each topic are semantically related, providing a measure of the interpretability and meaningfulness of the topics.
+For this, we used a sample month’s data (`2023-10`) to evaluate the coherence of the topic model, as calculating coherence for every month would be computationally intensive. This sample provided a benchmark for assessing how well the topic model captured meaningful patterns in Reddit discussions. The evaluation can also be found in `src/topic models/topic_modelling.ipynb`.
+
 ## Section 4: Findings
 
 ### 4.1 Results
@@ -104,6 +119,16 @@ The dataset, although complete for comment texts, contains linguistic variations
 *In this subsection, you should report the results from your experiments in a summary table, keeping only the most relevant results for your experiment (ie your best model, and two or three other options which you explored). You should also briefly explain the summary table and highlight key results.*
 
 *Interpretability methods like LIME or SHAP should also be reported here, using the appropriate tables or charts.*
+
+Our results show that the representation model in BERTopic has slightly better performance than BERTopic, with overall coherence score of 0.38. 
+
+| Model               | Coherence Score |
+| :---                | :----:          |
+| BERTopic            | 0.33            | 
+| Representation Model|0.38             |
+
+From our results, common themes like “crime”, “LGBTQ”, “politics”, “immigration” and “race” is frequently associated with high toxicity scores. Surprisingly, seemingly benign words related to families such as “marriage”, “parenthood” and “pregnancy”. Overall, the 3 Subreddits have seen an increase in toxicity from 2020 to 2023, with a large spike in toxicity score in October 2023. 
+
 
 ### 4.2 Discussion
 
@@ -116,3 +141,24 @@ The dataset, although complete for comment texts, contains linguistic variations
 *In this subsection, you should highlight your recommendations for what to do next. For most projects, what to do next is either to deploy the model into production or to close off this project and move on to something else. Reasoning about this involves understanding the business value, and the potential IT costs of deploying and integrating the model.*
 
 *Other things you can recommend would typically relate to data quality and availability, or other areas of experimentation that you did not have time or resources to do this time round.*
+
+Given our findings, we recommend several next steps to further MDDI’s objective of creating a safer online space, particularly on Reddit. These recommendations are focused on deploying the model, enhancing data quality, and improving support for affected communities.
+1. Deploy the Model to Flag Toxic Comments Exceeding a Threshold
+Firstly, we would recommend implementing this model in a production environment to automatically flag comments exceeding a toxicity threshold. This would allow real-time monitoring of harmful content. The flagged comments could be reviewed by moderators or automatically sent to platform administrators for additional scrutiny. This process can also inform further discussions with Reddit about monitoring toxic content and refining their moderation practices.
+2. Implement Age Limit Verification
+Given the prevalence of toxic content and the particular risk it poses to younger audiences, implementing an age limit verification feature on these subreddits or urging Reddit to do so would help shield minors from harmful content. This feature could prompt users to confirm their age before accessing certain threads with higher probability of high toxicity score, thereby potentially reducing exposure among younger demographics.
+3. Establish a Support Hotline for Minority Groups
+Our analysis shows that certain groups may be disproportionately affected by toxic content. Setting up an integrated platform where minority group members can provide feedback, report content, or seek support would create a channel for direct communication and assistance. This platform could offer psychological support and practical resources for anyone affected by hate speech or needs someone to talk to about their experiences on Reddit.
+4. Public Service Announcement (PSA) for Elevated Toxicity Levels
+If the model detects a sustained increase in toxicity over time, a parliamentary address could be made to raise awareness about the issue and encourage respectful discourse. Such a discourse could emphasize the importance of digital responsibility, especially in sensitive discussions affecting public morale. This approach helps manage public perception and actively reminds users of the importance of positive online behaviour.
+5. Integrate Real-Time Monitoring with Reddit via API
+Making API calls to Reddit to obtain real-time data on toxicity would allow for a continuous, updated analysis of trends and behaviours on Singapore subreddits. This integration would provide MDDI with a real time update of relevant data and enable more timely interventions.
+6. Acknowledge Model Limitations, Especially Lack of Singapore-Specific Context
+- One important limitation of the current model is that it may not be fully tailored to Singapore’s linguistic and cultural context. For instance, language nuances, slang, or dialectal expressions unique to Singapore may be misclassified as toxic or go unrecognized. Future work could involve training the model with more Singapore-specific data to enhance its accuracy and ensure fairer, more culturally appropriate results.
+- give specific egs: low coherence score in topics, 
+
+Possible Future Enhancements
+
+1.	Improving Data Quality and Availability: Access to original Reddit thread content (currently unavailable) would allow the model to better understand the context of toxic comments. Future partnerships with Reddit could focus on enabling this level of access.
+2.	Experiment with Different Models or Thresholds: Further testing with alternative models and adjusting thresholds for toxicity may yield even more accurate results. Additionally, experimenting with models specifically trained on multilingual data may help mitigate bias and improve fairness.
+By following these recommendations, MDDI can maximize the business value of this project and continue to make strides toward a safer online environment for Singapore’s Reddit users.
