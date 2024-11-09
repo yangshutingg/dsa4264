@@ -136,6 +136,29 @@ From our results, common themes like “crime”, “LGBTQ”, “politics”, �
 
 *You should also discuss or highlight other important issues like interpretability, fairness, and deployability.*
 
+In this section, we'll interpret the results in terms of business value, addressing how the continuous toxicity scoring impacts MDDI’s Online Trust and Safety department and other stakeholders. Additionally, we’ll examine aspects like interpretability, fairness, and deployability, providing a well-rounded view of the model's relevance to policy-making.
+Translating Technical Metrics to Business Value
+1.	Business Value of Continuous Toxicity Scoring: The continuous toxicity scores indicate the level of toxicity within comments rather than a binary classification. Higher toxicity scores mean that the model effectively identifies the intensity of harmful content, which supports MDDI’s mission to understand and mitigate online toxicity. These nuanced insights can drive more targeted policy interventions, especially around protecting children on social media by identifying content at varying degrees of harm.
+2.	Cost Implications: Implementing a continuous scoring model has specific computational costs, as it requires processing and scoring each comment rather than simply flagging content. However, this nuanced approach provides richer insights that justify the investment, as MDDI can focus resources on the most toxic areas, minimizing social costs associated with unchecked online toxicity.
+3.	Key Insights for Policy Development: By identifying trends in toxicity scores over time and across different topics, MDDI can make more informed decisions on which content types, user groups, or platforms may need enhanced monitoring. The scores provide guidance for working with social media platforms to develop tools that address different toxicity levels, enhancing online safety in Singapore.
+Interpretability
+Interpretability is essential here, as policymakers need to understand what drives specific toxicity scores and why certain content is rated as more harmful.
+1.	Policy Implications: Using interpretability methods like LIME or SHAP, we identified which words or phrases contribute most to high toxicity scores. This transparency helps policymakers understand not just whether content is harmful, but why, supporting data-driven policies to promote safe online spaces.
+2.	Transparency for Stakeholders: Clear interpretability allows social media platforms and stakeholders, like the Ministry of Community, Culture, and Youth, to see how toxicity scores are assigned. This builds trust and makes collaboration easier, as stakeholders understand the data-driven criteria behind the scores and can work to address specific areas of concern.
+Fairness
+Fairness is critical in continuous toxicity scoring, especially in a multicultural context like Singapore.
+1.	Potential Biases: The model could inadvertently assign higher toxicity scores to certain groups if it isn’t trained across diverse language styles and cultural expressions. This is particularly relevant in Singapore, where language can vary significantly across ethnic groups.
+2.	Mitigating Fairness Risks: By periodically retraining the model with balanced, representative data, and using fairness metrics, we can help ensure that the model does not unfairly target specific groups. This approach minimizes undue censorship and promotes equitable outcomes across all user demographics.
+Deployability
+Deployability refers to the ease of implementing and scaling the continuous scoring model.
+1.	Scalability: The model’s continuous scoring allows it to monitor toxicity trends in real time, providing an adaptable tool that scales to changing trends. This would be valuable for MDDI’s ongoing efforts, as the model could be integrated with social media platforms for real-time analysis or used as a standalone tool for periodic assessments.
+2.	Maintenance: The model should be retrained periodically to stay current with linguistic trends and shifts in online behavior. Regular updates ensure that the model remains relevant, capturing new forms of toxic language as they emerge.
+3.	Integration with Existing Tools: By integrating this model alongside existing moderation tools on social media platforms, MDDI could enhance overall safety with minimal operational overhead. Continuous scores could inform these tools on varying levels of moderation, targeting the most harmful content while maintaining platform engagement.
+Addressing the Business Problem
+With these results and considerations, we conclude that this continuous toxicity scoring model effectively addresses the business problem by providing MDDI’s Online Trust and Safety department with actionable insights into the severity and drivers of toxic content over time. This model allows the department to make data-informed policy recommendations and foster collaboration with social media platforms to mitigate online harm at various toxicity levels.
+In summary, the model’s continuous scoring approach, coupled with interpretability, fairness, and scalability, makes it a valuable asset in MDDI’s mission to foster a safer online environment. Future considerations should include ongoing enhancements for fairness and regular updates to ensure the model aligns with evolving online language and cultural nuances.
+
+
 ### 4.3 Recommendations
 
 *In this subsection, you should highlight your recommendations for what to do next. For most projects, what to do next is either to deploy the model into production or to close off this project and move on to something else. Reasoning about this involves understanding the business value, and the potential IT costs of deploying and integrating the model.*
