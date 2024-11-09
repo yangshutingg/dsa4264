@@ -123,9 +123,9 @@ For this, we used a sample month’s data (`2023-10`) to evaluate the coherence 
 
 In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis.
 
-| Model               | Representation Model | Number of Topics | Coherence Score |
-| :---                | :----:               | :----:           | :----:          |
-| BERTopic            | KeyBERTInspired      | auto             | 0.33            |
+| Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score |
+| :---    | :----:               | :----:                 | :----:                        |                 |
+| BERTopic| KeyBERTInspired      | auto                   |                               | 0.33            |
 
 From our results, common themes like “crime”, “LGBTQ”, “politics”, “immigration” and “race” is frequently associated with high toxicity scores. Surprisingly, seemingly benign words related to families such as “marriage”, “parenthood” and “pregnancy”. Overall, the 3 Subreddits have seen an increase in toxicity from 2020 to 2023, with a large spike in toxicity score in October 2023. 
 
