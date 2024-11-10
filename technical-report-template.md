@@ -177,7 +177,7 @@ Possible Future Enhancements
 
 1. Acknowledge Model Limitations, Especially Lack of Singapore-Specific Context
 - One important limitation of the current model is that it may not be fully tailored to Singapore’s linguistic and cultural context. For instance, language nuances, slang, or dialectal expressions unique to Singapore may be misclassified as toxic or go unrecognized. Future work could involve training the model with more Singapore-specific data to enhance its accuracy and ensure fairer, more culturally appropriate results. To ensure that the toxicity scoring model is fair, we could periodically retrain the model with balanced, representative data. Using fairness metrics, we can help ensure that the model does not unfairly target specific comments. This approach minimizes undue censorship and promotes equitable toxicity scoring across all comments.
-- give specific egs: low coherence score in topics, 
+- give specific egs: low coherence score in topics, how to improve coherence score
 2.	Improving Data Quality and Availability: Access to original Reddit thread content (currently unavailable) would allow the model to better understand the context of toxic comments. Future partnerships with Reddit could focus on enabling this level of access.
 3.	Experiment with Different Models or Thresholds: Further testing with alternative models and adjusting thresholds for toxicity may yield even more accurate results. Additionally, experimenting with models specifically trained on multilingual data may help mitigate bias and improve fairness.
 By following these recommendations, MDDI can maximize the business value of this project and continue to make strides toward a safer online environment for Singapore’s Reddit users.
