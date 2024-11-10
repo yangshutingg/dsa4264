@@ -131,6 +131,22 @@ with tab2:
     st.subheader("Top 10 Topic Clusters by Average Toxicity")
     st.write(topic_clusters[['cluster_id', 'avg_toxicity', 'unique_keywords']].head(10))
 
+    st.subheader("Toxicity Evolution of the Top 10 Topics by Average Toxicity")
+    fig = go.Figure()
+    top10_topic_avg_toxicity = top10_topics.groupby(['cluster_id', 'date'])['avg_toxicity'].mean().reset_index()
+    top10_topic_avg_toxicity = top10_topic_avg_toxicity.pivot(index='date', columns='cluster_id', values='avg_toxicity')
+    for cluster_id in top10_topic_avg_toxicity.columns:
+        fig.add_trace(go.Scatter(
+            x = top10_topic_avg_toxicity.index,
+            y = top10_topic_avg_toxicity[cluster_id],
+            mode='lines',
+            name=f"Cluster {cluster_id}"
+        ))
+
+    fig.update_yaxes(range=[0, 0.55], title_text="Average Toxicity Score")
+    
+    st.plotly_chart(fig)
+
 
 # Key Insights section
 st.header("Insights")
