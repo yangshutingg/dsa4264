@@ -3,137 +3,94 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
+import os
 # from datetime import datetime, timedelta
 
-# Generate sample data for demonstration
+# Define Handles
 @st.cache_data
-def generate_sample_data():
-    # Date range
-    dates = pd.date_range(start='2023-01-01', end='2024-01-01', freq='M')
-    
-    # Sample topics
-    topics = ['Politics', 'Housing', 'Education', 'COVID', 'Economy', 'Transportation']
-    
-    # Create sample data
-    data = pd.DataFrame({
-        'date': dates,
-        'toxicity_score': np.random.rand(len(dates)) * 0.5 + 0.2,
-        'political_posts': np.random.randint(100, 200, size=len(dates)),
-        'total_posts': np.random.randint(500, 1000, size=len(dates))
-    })
-    
-    # Create topic distribution
-    topic_data = pd.DataFrame({
-        'topic': topics,
-        'percentage': np.random.dirichlet(np.ones(len(topics))) * 100,
-        'toxicity': np.random.rand(len(topics)) * 0.5 + 0.2
-    })
-    
-    return data, topic_data
-
-@st.cache_data
-def load_data():
+def load_monthly_summary():
     try:
-        df = pd.read_csv('data/monthly_summary.csv')
-        df['date'] = pd.to_datetime(df['date'])
+        file_path = '../data/monthly_scores_summary.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
+        
+        df = pd.read_csv(file_path)
+        df['yearmonth'] = pd.to_datetime(df['yearmonth'])
+        df['year'] = df['yearmonth'].dt.year
+        df['month'] = df['yearmonth'].dt.month
         return df
-    except:
-        # Generate sample data if file not found
-        return generate_sample_data()
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
 
-# Load sample data
-data, topic_data = generate_sample_data()
+@st.cache_data
+def load_topic_clusters_data():
+    try:
+        file_path = '../data/topic_clusters.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
+        
+        df = pd.read_csv(file_path)
+        df = df.sort_values(by='avg_toxicity', ascending=False) 
+        return df
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
+    
+@st.cache_data
+def load_top10_topic_clusters_data():
+    try:
+        file_path1 = '../data/top10_topic_avg_toxicity.csv'
+        file_path2 = '../data/top10_topic_post_count.csv'
+        if not os.path.exists(file_path1):
+            raise FileNotFoundError(f"{file_path1} not found.")
+        if not os.path.exists(file_path2):
+            raise FileNotFoundError(f"{file_path2} not found.")
+        
+        df1 = pd.read_csv(file_path1)
+        df2 = pd.read_csv(file_path2)
+        return df1, df2
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
 
-# Title is already set in Home.py
-st.title("Overview Dashboard")
+# Load data
+monthly_summary = load_monthly_summary()
+topic_clusters = load_topic_clusters_data()
+top10_topics_toxicity, top10_topics_post_count = load_top10_topic_clusters_data()
 
-# Sidebar filters
-st.sidebar.header("Filters")
+# Title
+st.title("Overall Trends")
 
-# Time range filter
-# Modify the time range selection part
-# Instead of setting session state after selection, initialize it first
-
-# Initialize session state if needed
-# if 'time_range' not in st.session_state:
-#     st.session_state['time_range'] = "Last 1 year"
-# if 'subreddits' not in st.session_state:
-#     st.session_state['subreddits'] = ["r/Singapore"]
-
-# # Use session state in the selectbox
-# time_range = st.sidebar.selectbox(
-#     "Time Range",
-#     ["Last 6 months", "Last 1 year", "Last 2 years", "All time"],
-#     index=["Last 6 months", "Last 1 year", "Last 2 years", "All time"].index(st.session_state['time_range'])
-# )
-
-# Update session state through callback
-# if time_range != st.session_state['time_range']:
-#     st.session_state['time_range'] = time_range
-
-# Similarly for subreddit selection
-# subreddit = st.sidebar.multiselect(
-#     "Subreddit",
-#     ["r/Singapore", "r/SingaporeRaw", "r/SingaporeHappenings"],
-#     default=st.session_state['subreddits']
-# )
-
-# if subreddit != st.session_state['subreddits']:
-#     st.session_state['subreddits'] = subreddit
-
-# Store in session state for other pages
-# st.session_state['time_range'] = time_range
-
-
-# Create three columns for metrics
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric(
-        label="Overall Toxicity Trend",
-        value="+23%",
-        delta="2.1%"
-    )
-
-with col2:
-    st.metric(
-        label="Most Active Topics",
-        value="Politics",
-        delta="34% of discussions"
-    )
-
-with col3:
-    st.metric(
-        label="High Risk Topics",
-        value="3 detected",
-        delta="Foreign Policy, Race Relations, COVID"
-    )
-
-# Tabs using streamlit
-tab1, tab2, tab3 = st.tabs(["Timeline Analysis", "Topic Analysis", "Correlation Analysis"])
+# Tabs
+tab1, tab2, tab3 = st.tabs(["Trend Analysis", "Topic Analysis", "Correlation Analysis"])
 
 with tab1:
     st.subheader("Toxicity Over Time")
     
+    yearmonth = monthly_summary['yearmonth']
+    ave_score = monthly_summary['average_toxicity_score_mean']
+
     fig = go.Figure()
+
     fig.add_trace(go.Scatter(
-        x=data['date'],
-        y=data['toxicity_score'],
-        name='Toxicity Score'
+        x = yearmonth, 
+        y = ave_score, 
+        name = 'Toxicity Score'
     ))
-    
+
+    slope, intercept = np.polyfit(yearmonth.map(pd.Timestamp.toordinal), ave_score, 1)
+    best_fit_line = slope * yearmonth.map(pd.Timestamp.toordinal) + intercept
+
     fig.add_trace(go.Scatter(
-        x=data['date'],
-        y=data['political_posts']/1000,
-        name='Political Posts (K)',
-        yaxis='y2'
-    ))
-    
-    fig.update_layout(
-        title='Toxicity Score vs Political Posts',
-        yaxis=dict(title='Toxicity Score'),
-        yaxis2=dict(title='Posts (K)', overlaying='y', side='right')
-    )
+        x = yearmonth,
+        y = best_fit_line,
+        mode='lines',
+        name='Best Fit Line',
+        line=dict(dash='dash') 
+        ))
+
+    fig.update_yaxes(range=[0, 0.1]) 
     
     st.plotly_chart(fig, use_container_width=True)
 
@@ -141,11 +98,18 @@ with tab2:
     st.subheader("Topic Distribution")
     
     # Create a treemap for topic distribution
+    
     fig_tree = px.treemap(
-        topic_data,
-        path=['topic'],
-        values='percentage',
-        color='toxicity',
+        topic_clusters,
+        path=["cluster_id", "sample_topics"],
+        values="size",
+        color="avg_toxicity",
+        hover_data={
+            "total_posts": True,
+            "unique_keywords": True,
+            "topic_diversity": True,
+            "avg_toxicity": True
+        },
         color_continuous_scale='RdYlBu_r',
         title='Topic Distribution and Toxicity'
     )
