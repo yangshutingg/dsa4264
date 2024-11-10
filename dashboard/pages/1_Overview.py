@@ -60,16 +60,29 @@ topic_clusters = load_topic_clusters_data()
 top10_topics_toxicity, top10_topics_post_count = load_top10_topic_clusters_data()
 
 # Title
-st.title("Overall Trends")
+st.title("Overall Analysis")
 
 # Tabs
 tab1, tab2, tab3 = st.tabs(["Trend Analysis", "Topic Analysis", "Correlation Analysis"])
 
 with tab1:
     st.subheader("Toxicity Over Time")
+
+    # Time Range Filter
+    start_date, end_date = st.slider(
+        "Select Date Range",
+        min_value = monthly_summary['yearmonth'].min().date(),
+        max_value = monthly_summary['yearmonth'].max().date(),
+        value = (monthly_summary['yearmonth'].min().date(), 
+                monthly_summary['yearmonth'].max().date()),
+        format = "YYYY-MM"
+    )
+
+    filtered_df = monthly_summary[(monthly_summary['yearmonth'].dt.date >= start_date) & 
+                                  (monthly_summary['yearmonth'].dt.date <= end_date)]
     
-    yearmonth = monthly_summary['yearmonth']
-    ave_score = monthly_summary['average_toxicity_score_mean']
+    yearmonth = filtered_df['yearmonth']
+    ave_score = filtered_df['average_toxicity_score_mean'].round(3)
 
     fig = go.Figure()
 
@@ -90,22 +103,21 @@ with tab1:
         line=dict(dash='dash') 
         ))
 
-    fig.update_yaxes(range=[0, 0.1]) 
+    fig.update_yaxes(range=[0, 0.1],
+                     title_text="Average Toxicity Score") 
     
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
     st.subheader("Topic Distribution")
     
-    # Create a treemap for topic distribution
-    
     fig_tree = px.treemap(
         topic_clusters,
-        path=["cluster_id", "sample_topics"],
-        values="size",
+        path=["cluster_id"],
+        values="total_posts",
         color="avg_toxicity",
         hover_data={
-            "total_posts": True,
+            "total_posts": False,
             "unique_keywords": True,
             "topic_diversity": True,
             "avg_toxicity": True
