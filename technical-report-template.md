@@ -98,10 +98,6 @@ Rather than splitting the data, we applied pre-trained NLP models directly to th
 * *Evaluation: Which evaluation metric did you optimise and assess the model on? Why is this the most appropriate?*
 * *Training: How did you arrive at the final set of hyperparameters? How did you manage imbalanced data or regularisation?*
 
-- Why we chose HateBERT, HateXplain, ToxicBert -> why average the score
-- Why we chose BERTopic instead of LDA -> why we choose certain parameters in BERTopic
-    - evaluate by coherence score, quality of topics
-
 Our model development process involved experimenting with various NLP algorithms to detect toxicity levels and uncover topic trends across Reddit comments. Given our focus on detecting nuanced language patterns and toxic behaviour, we chose transformer-based models such as HateBERT, HateXplain, and ToxicBERT, which are specifically fine-tuned for handling toxic language on social media and online forums, which closely aligns with the characteristics of our dataset. Reddit is known for its conversational, often informal, and sometimes contentious style of discussion, which these models are well-equipped to handle due to their training on similar datasets. These models were also selected based on their ability to handle the complexities of such online discourse, including slang, sarcasm, and mixed languages. The relevant codes can be found under `src/toxicity models`. In addition, averaging the toxicity scores across these three models provides a more reliable estimate, reducing biases associated with any one model’s classification tendencies. The implementation of the averaging can be found in `src/data_processing.ipynb`.
 
 
@@ -125,6 +121,8 @@ In our chosen configuration, the coherence score for October 2023 was 0.33, refl
 | Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score |
 | :---:   | :----:               | :----:                 | :----:                        | :----:          |
 | BERTopic| KeyBERTInspired      | 800                    | 56                            | 0.33            |
+
+![Top 10 Toxic Topic Clusters](../data/top10 table.png)
 
 From our results, common themes like “crime”, “LGBTQ”, “politics”, “immigration” and “race” is frequently associated with high toxicity scores. Surprisingly, seemingly benign words related to families such as “marriage”, “parenthood” and “pregnancy” are also correlated with high toxicity. Overall, the 3 Subreddits have seen an increase in toxicity from 2020 to 2023, with a large spike in toxicity score in October 2023. 
 
@@ -171,6 +169,8 @@ Our analysis shows that certain groups may be disproportionately affected by tox
 If the model detects a sustained increase in toxicity over time, a parliamentary address could be made to raise awareness about the issue and encourage respectful discourse. Such a discourse could emphasize the importance of digital responsibility, especially in sensitive discussions affecting public morale. This approach helps manage public perception and actively reminds users of the importance of positive online behaviour.
 5. Integrate Real-Time Monitoring with Reddit via API
 Making API calls to Reddit to obtain real-time data on toxicity would allow for a continuous, updated analysis of trends and behaviours on Singapore subreddits. This integration would provide MDDI with a real time update of relevant data and enable more timely interventions.
+
+
 6. Key Insights for Policy Development: By identifying trends in toxicity scores over time and across different topics, MDDI can make more informed decisions on which content types, user groups, or subreddits may need enhanced monitoring. The scores provide guidance for working with Reddit to develop tools that address different toxicity levels, enhancing online safety in Singapore.
 
 Possible Future Enhancements
