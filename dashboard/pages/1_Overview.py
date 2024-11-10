@@ -129,7 +129,7 @@ with tab2:
     st.plotly_chart(fig_tree, use_container_width=True)
 
     st.subheader("Top 10 Topic Clusters by Average Toxicity")
-    st.write(topic_clusters[['cluster_id', 'avg_toxicity', 'unique_keywords']].head(10))
+    st.write(topic_clusters[['avg_toxicity', 'unique_keywords']].head(10))
 
     st.subheader("Toxicity Evolution of the Top 10 Topics by Average Toxicity")
     fig = go.Figure()
