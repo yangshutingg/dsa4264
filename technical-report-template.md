@@ -136,22 +136,23 @@ From our results, common themes like “crime”, “LGBTQ”, “politics”, �
 *You should also discuss or highlight other important issues like interpretability, fairness, and deployability.*
 
 In this section, we'll interpret the results in terms of business value, addressing how the toxicity scoring impacts MDDI’s Online Trust and Safety department and other stakeholders. Additionally, we’ll examine aspects like interpretability, fairness, and deployability, providing a well-rounded view of the implications of the findings to policy-making.
-Translating Technical Metrics to Business Value
+#### Translating Technical Metrics to Business Value
 1.	Business Value of Toxicity Scoring: The toxicity scores indicate the level of toxicity within comments rather than a binary classification. Higher toxicity scores mean that the models effectively identify the intensity of harmful content, which supports MDDI’s mission to understand and mitigate online toxicity. These nuanced insights can drive more targeted policy interventions, especially around protecting children on social media by identifying content with high degree of harm.
 2.	Cost Implications: Implementing a toxicity scoring model has high computational costs, as it requires processing and scoring each comment rather than simply flagging content. However, this nuanced approach provides richer insights that justify the investment, as MDDI can focus resources on the most toxic areas, minimizing social costs associated with unchecked online toxicity.
 3.	Key Insights for Policy Development: By identifying trends in toxicity scores over time and across different topics, MDDI can make more informed decisions on which content types, user groups, or subreddits may need enhanced monitoring. The scores provide guidance for working with Reddit to develop tools that address different toxicity levels, enhancing online safety in Singapore.
-Interpretability
+#### Interpretability
 Interpretability is essential here, as policymakers need to understand what drives specific toxicity scores and why certain content is rated as more harmful.
 1.	Policy Implications: Using topic modelling methods, we identified which words or phrases contribute most to high toxicity scores. This helps policymakers understand not just whether content is harmful, but why, supporting data-driven and targeted policies to promote safe online spaces.
 Fairness
 Fairness is critical in toxicity scoring, especially in a multicultural and multiracial context like Singapore.
 1.	Potential Biases: The model could inadvertently assign higher toxicity scores to certain comments with specific words if it isn’t trained across diverse language styles and cultural expressions. This is particularly relevant in Singapore, where language can vary significantly across ethnic groups. For instance, the use of Singlish words in different contexts can have vastly different meaning.
 2.	Mitigating Fairness Risks: By periodically retraining the model with balanced, representative data, and using fairness metrics, we can help ensure that the model does not unfairly target specific comments. This approach minimizes undue censorship and promotes equitable toxicity scoring across all comments.
-Deployability
+#### Deployability
 Deployability refers to the ease of implementing and scaling the toxicity scoring model.
 1.	Scalability: The model’s continuous scoring allows MDDI to monitor toxicity trends periodically, which proves to be a useful tool that scales to changing trends. This would be valuable for MDDI’s ongoing efforts, as the model could be integrated with other social media platforms for real-time analysis.
 2.	Maintenance: The model should be retrained periodically to stay current with linguistic trends and shifts in online behavior. Regular updates ensure that the model remains relevant, capturing new forms of toxic language as they emerge.
 3.	Integration with Existing Tools: By integrating this model alongside existing moderation policies on Reddit, MDDI could enhance overall safety with minimal operational overhead. Toxicity scores could inform moderators of the Subreddit on varying levels of moderation, targeting the most harmful content while maintaining platform engagement.
+
 With these results and considerations, our toxicity scoring and topic modelling methods effectively addresses the business problem by providing MDDI’s Online Trust and Safety department with actionable insights into the severity and drivers of toxic content over time. This allows the department to make data-informed policy recommendations and foster collaboration with Reddit and the general public to mitigate online harm at various toxicity levels.
 
 
