@@ -1,6 +1,6 @@
 # Technical Report
 
-**Project: Singapore Reddit Toxicity Analysis**  
+**Project: Singapore Subreddits Toxicity Analysis**  
 **Members: Bernice Ong Hwee Yee, Cao Han, Luo Xinming, Su Xuanxuan, Yang Shu Ting**  
 Last updated on 13/11/2024
 
