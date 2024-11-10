@@ -38,18 +38,14 @@ def load_topic_clusters_data():
         return None
     
 @st.cache_data
-def load_top10_topic_clusters_data():
+def load_top10_topics_data():
     try:
-        file_path1 = '../data/top10_topic_avg_toxicity.csv'
-        file_path2 = '../data/top10_topic_post_count.csv'
-        if not os.path.exists(file_path1):
-            raise FileNotFoundError(f"{file_path1} not found.")
-        if not os.path.exists(file_path2):
-            raise FileNotFoundError(f"{file_path2} not found.")
+        file_path = '../data/top10_topics.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
         
-        df1 = pd.read_csv(file_path1)
-        df2 = pd.read_csv(file_path2)
-        return df1, df2
+        df = pd.read_csv(file_path)
+        return df
     except Exception as e:
         st.error(f"An unexpected error occurred: {e}")
         return None
@@ -57,13 +53,13 @@ def load_top10_topic_clusters_data():
 # Load data
 monthly_summary = load_monthly_summary()
 topic_clusters = load_topic_clusters_data()
-top10_topics_toxicity, top10_topics_post_count = load_top10_topic_clusters_data()
+top10_topics = load_top10_topics_data()
 
 # Title
 st.title("Overall Analysis")
 
 # Tabs
-tab1, tab2, tab3 = st.tabs(["Trend Analysis", "Topic Analysis", "Correlation Analysis"])
+tab1, tab2 = st.tabs(["Trend Analysis", "Cluster Analysis"])
 
 with tab1:
     st.subheader("Toxicity Over Time")
@@ -109,41 +105,32 @@ with tab1:
     st.plotly_chart(fig, use_container_width=True)
 
 with tab2:
-    st.subheader("Topic Distribution")
+    st.subheader("Topic Clustering")
     
     fig_tree = px.treemap(
         topic_clusters,
         path=["cluster_id"],
         values="total_posts",
         color="avg_toxicity",
-        hover_data={
-            "total_posts": False,
-            "unique_keywords": True,
-            "topic_diversity": True,
-            "avg_toxicity": True
-        },
         color_continuous_scale='RdYlBu_r',
-        title='Topic Distribution and Toxicity'
+        title='Cluster Distribution'
+    )
+
+    fig_tree.update_traces(
+        hovertemplate=(
+            "<b>Cluster ID:</b> %{label}<br>" +
+            "<b>Total Posts:</b> %{value:,} posts<br>" +               # Format as integer with comma
+            "<b>Unique Keywords:</b> %{customdata[3]}<br>" +           # Format as integer with comma
+            "<b>Topic Diversity:</b> %{customdata[4]:.2f}<br>" +       # Format as decimal with 2 places
+            "<b>Average Toxicity:</b> %{color:.2f}"                    # Format as decimal with 2 places
+        ),
+        customdata = topic_clusters.values
     )
     st.plotly_chart(fig_tree, use_container_width=True)
 
-with tab3:
-    st.subheader("Correlation Analysis")
-    
-    # Create correlation heatmap
-    correlation_data = pd.DataFrame({
-        'Toxicity': np.random.rand(100),
-        'Post Length': np.random.rand(100),
-        'Comments': np.random.rand(100),
-        'Time of Day': np.random.rand(100)
-    })
-    
-    fig_corr = px.imshow(
-        correlation_data.corr(),
-        title='Feature Correlations',
-        color_continuous_scale='RdBu'
-    )
-    st.plotly_chart(fig_corr, use_container_width=True)
+    st.subheader("Top 10 Topic Clusters by Average Toxicity")
+    st.write(topic_clusters[['cluster_id', 'avg_toxicity', 'unique_keywords']].head(10))
+
 
 # Key Insights section
 st.header("Key Insights")
