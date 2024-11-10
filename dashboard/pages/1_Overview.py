@@ -133,14 +133,10 @@ with tab2:
 
 
 # Key Insights section
-st.header("Key Insights")
+st.header("Insights")
 with st.expander("See detailed insights"):
     st.write("""
     1. Political discussions show highest correlation with toxic comments
     2. Weekday evenings show peak toxicity levels
     3. Certain topics consistently trigger negative responses
     """)
-
-# Add a link to the detailed analysis
-st.sidebar.markdown("---")
-st.sidebar.markdown("👉 Check out the [Detailed Analysis](/Detailed_Analysis) for more insights!")
