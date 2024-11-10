@@ -74,6 +74,8 @@ The analysis relies on cloud-based and on-premise computational resources, with 
 Due to resource constraints, we are limited to using free models available on platforms like HuggingFace, ruling out paid services such as the Perspective API or OpenAI API. This affects our model selection, as only free models are considered for toxicity and hate speech detection.
 
 **(to add on more focused questions for hypothesis)**
+We would like to investigate whether the increase in toxicity in these Subreddits over the past 4 years is due to more reports of news where foreigners commit crime, and if this could be exacerbated by unhappiness among Singaporeans and hostile attitude towards foreigners. Additionally, we would also like to investigate whether the increase in toxicity over the past 4 years is due to increasingly divided views on LGBTQ+ issues, and if this partially influenced by religious views and people becoming more vocal in voicing out against the community. 
+
 We hypothesise that hate speech and toxicity have increased in Singapore-specific subreddits over the years and that specific topics (e.g. political, racial or religious content) may exacerbate such behaviors. 
 
 The dataset, although complete for comment texts, contains linguistic variations (e.g. mixed languages, slang, spelling errors), but these are manageable using pre-trained NLP models. Additionally, we will account for comments that are removed or deleted during the preprocessing stage.
