@@ -121,15 +121,17 @@ To analyse toxicity across different themes within Reddit posts, related topics 
 
 *Interpretability methods like LIME or SHAP should also be reported here, using the appropriate tables or charts.*
 
-From our results, we found that while the overall toxicity scores across the 3 subreddits remain relatively low at around 0.1, we see a gradual increase from 2020 to 2023, with a significant spike in October 2023. 
+From our results, we found that while the overall toxicity scores across the 3 subreddits remain relatively low at around 0.1, we see a gradual increase from 2020 to 2023, with a significant spike in October 2023 (Figure 1). 
 
-<to insert trend graph>
+![Figure 1. Overall Toxicity Trend](<Overall Toxicity Trend.png>)
 
 Within this trend, certain themes are frequently associated with higher toxicity. Topics like “crime,” “LGBTQ,” “politics,” “immigration,” and “race” exhibit consistently elevated scores. Interestingly, seemingly neutral terms related to family, such as “marriage,” “parenthood,” and “pregnancy,” also show a correlation with higher toxicity.
 
-![Top 10 Toxic Topic Clusters](../data/top10 table.png)
+![Table 1. Top 10 Toxic Topic Clusters](<top10 table.png>)
 
-The topics related to LGBTQ+ have also seen a rise in toxicity over time.
+The topics related to LGBTQ+ have also seen a rise in toxicity over time (Figure 2).
+
+![Figure 2. Toxicity Evolution of Top 10 Toxic Topics](<top10 time graph-1.png>)
 
 In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis.
 
