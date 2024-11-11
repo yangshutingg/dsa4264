@@ -127,6 +127,8 @@ Within this trend, certain themes are frequently associated with higher toxicity
 
 ![Top 10 Toxic Topic Clusters](../data/top10 table.png)
 
+The topics related to LGBTQ+ have also seen a rise in toxicity over time.
+
 In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis.
 
 | Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score |
