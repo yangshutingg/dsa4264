@@ -179,7 +179,7 @@ If the model detects a sustained increase in toxicity over time, a parliamentary
 Making API calls to Reddit to obtain real-time data on toxicity would allow for a continuous, updated analysis of trends and behaviours on Singapore subreddits. This integration would provide MDDI with a real time update of relevant data and enable more timely interventions.
 
 #### Possible Future Enhancements
-##### 1. Tailor Models to Singapore-Specific Context
+##### 1. Fine-tune Models to Singapore-Specific Context
 One important limitation of the current model is that it may not be fully tailored to Singapore’s linguistic and cultural context. For instance, language nuances, slang, or dialectal expressions unique to Singapore may be misclassified as toxic or go unrecognised. Future work could involve fine-tuning the models for local language variants such as Singlish to better understand and appropriately score context-specific expressions that may carry different connotations in Singapore. To ensure that the toxicity scoring model is fair, we could periodically retrain the model with balanced, representative data. Using fairness metrics, we can help ensure that the model does not unfairly target specific comments. This approach minimises undue censorship and promotes equitable toxicity scoring across all comments.
 Further testing with alternative models for toxicity may yield even more accurate results. Additionally, experimenting with models specifically trained on multilingual data may help mitigate bias and improve fairness.
 - give specific egs: low coherence score in topics, how to improve coherence score
