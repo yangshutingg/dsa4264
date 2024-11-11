@@ -116,16 +116,19 @@ For this, we used a sample month’s data (`2023-10`) to evaluate the coherence 
 
 *Interpretability methods like LIME or SHAP should also be reported here, using the appropriate tables or charts.*
 
+From our results, we found that while the overall toxicity scores across the 3 subreddits remain relatively low at around 0.1, we see a gradual increase from 2020 to 2023, with a significant spike in October 2023. 
+
+<to insert trend graph>
+
+Within this trend, certain themes are frequently associated with higher toxicity. Topics like “crime,” “LGBTQ,” “politics,” “immigration,” and “race” exhibit consistently elevated scores. Interestingly, seemingly neutral terms related to family, such as “marriage,” “parenthood,” and “pregnancy,” also show a correlation with higher toxicity.
+
+![Top 10 Toxic Topic Clusters](../data/top10 table.png)
+
 In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis.
 
 | Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score |
 | :---:   | :----:               | :----:                 | :----:                        | :----:          |
 | BERTopic| KeyBERTInspired      | 800                    | 56                            | 0.33            |
-
-![Top 10 Toxic Topic Clusters](../data/top10 table.png)
-
-From our results, common themes like “crime”, “LGBTQ”, “politics”, “immigration” and “race” is frequently associated with high toxicity scores. Surprisingly, seemingly benign words related to families such as “marriage”, “parenthood” and “pregnancy” are also correlated with high toxicity. Overall, the 3 Subreddits have seen an increase in toxicity from 2020 to 2023, with a large spike in toxicity score in October 2023. 
-
 
 ### 4.2 Discussion
 
@@ -140,7 +143,7 @@ In this section, we'll interpret the results in terms of business value, address
 #### Interpretability
 Interpretability is essential here, as policymakers need to understand what drives specific toxicity scores and why certain content is rated as more harmful.
 1.	Policy Implications: Using topic modelling methods, we identified which words or phrases contribute most to high toxicity scores. This helps policymakers understand not just whether content is harmful, but why, supporting data-driven and targeted policies to promote safe online spaces.
-Fairness
+#### Fairness
 Fairness is critical in toxicity scoring, especially in a multicultural and multiracial context like Singapore.
 1.	Potential Biases: The model could inadvertently assign higher toxicity scores to certain comments with specific words if it isn’t trained across diverse language styles and cultural expressions. This is particularly relevant in Singapore, where language can vary significantly across ethnic groups. For instance, the use of Singlish words in different contexts can have vastly different meaning.
 #### Deployability
