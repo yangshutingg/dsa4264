@@ -98,15 +98,18 @@ Rather than splitting the data, we applied pre-trained NLP models directly to th
 * *Evaluation: Which evaluation metric did you optimise and assess the model on? Why is this the most appropriate?*
 * *Training: How did you arrive at the final set of hyperparameters? How did you manage imbalanced data or regularisation?*
 
+#### Toxicity Scores
 Our model development process involved experimenting with various NLP algorithms to detect toxicity levels and uncover topic trends across Reddit comments. Given our focus on detecting nuanced language patterns and toxic behaviour, we chose transformer-based models such as HateBERT, HateXplain, and ToxicBERT, which are specifically fine-tuned for handling toxic language on social media and online forums, which closely aligns with the characteristics of our dataset. Reddit is known for its conversational, often informal, and sometimes contentious style of discussion, which these models are well-equipped to handle due to their training on similar datasets. These models were also selected based on their ability to handle the complexities of such online discourse, including slang, sarcasm, and mixed languages. The relevant codes can be found under `src/toxicity models`. In addition, averaging the toxicity scores across these three models provides a more reliable estimate, reducing biases associated with any one model’s classification tendencies. The implementation of the averaging can be found in `src/data_processing.ipynb`.
 
-
+#### Topic Modelling
 For topic modelling, we opted for BERTopic instead of more traditional algorithms like Latent Dirichlet Allocation (LDA) to identify and analyse discussion topics within Reddit comments for each `yearmonth` across our dataset. By examining each `yearmonth` separately, we could observe how certain topics and themes evolved over time, enabling us to pinpoint when and where toxicity levels might have surged and uncover any patterns in discourse contributing to this increase. BERTopic was chosen because it leverages transformer-based embeddings, allowing it to capture contextual nuances and generate coherent topics from unstructured text. This approach was particularly valuable for identifying the thematic trends that contribute to online toxicity in Singapore-specific subreddits. 
 
 More specifically, we chose the `KeyBERTInspired` representation model because it focuses on extracting key phrases from each topic in a way that emphasises contextual relevance. This model allowed us to generate coherent and meaningful phrases representative of user discussions, aligning well with the informal and conversational style of Reddit comments. We also set `nr_topics` to `auto` to dynamically reduce the number of topics and improve interpretability. This setting automatically merges similar topics, allowing us to avoid manually tuning the topic count and instead focusing on distinct, meaningful themes. The implementation can be found in `src/topic models/topic_modelling.ipynb`.
 
 To ensure the quality and relevance of the extracted topics, we used a coherence score as our evaluation metric. Coherence scores indicate the degree to which the words within each topic are semantically related, providing a measure of the interpretability and meaningfulness of the topics.
 For this, we used a sample month’s data (`2023-10`) to evaluate the coherence of the topic model, as calculating coherence for every month would be computationally intensive. This sample provided a benchmark for assessing how well the topic model captured meaningful patterns in Reddit discussions. The evaluation can also be found in `src/topic models/topic_modelling.ipynb`.
+
+#### Topic Clustering
 
 ## Section 4: Findings
 
