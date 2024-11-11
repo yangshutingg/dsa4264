@@ -76,7 +76,7 @@ To ensure the quality and relevance of the extracted topics, we used a coherence
 For this, we used a sample month’s data (`2023-10`) to evaluate the coherence of the topic model, as calculating coherence for every month would be computationally intensive. This sample provided a benchmark for assessing how well the topic model captured meaningful patterns in Reddit discussions. The evaluation can also be found in `src/topic models/topic_modelling.ipynb`.
 
 #### Topic Clustering
-To analyse toxicity across different themes within Reddit posts, related topics are grouped into clusters with the in-cluster toxicity level over time examined. This process consists of four main steps. First, textual topic data are converted into TF-IDF vectors to capture the importance of terms while considering both individual words and bigrams. Then, nearest neighbor analysis with cosine similarity is used to identify similar topics based on vectorized keywords. The next step is building a graph where nodes represent topics and edges represent high-similarity relationships, following which community detection algorithms are applied to this network to reveal clusters of related topics, i.e. the semantic clusters.
+To analyse toxicity across different themes within Reddit posts, related topics are grouped into clusters with the in-cluster toxicity level over time examined. This process consists of four main steps. First, textual topic data are converted into TF-IDF vectors to capture the importance of terms while considering both individual words and bigrams. Then, nearest neighbor analysis with cosine similarity is used to identify similar topics based on vectorized keywords. The next step is building a graph where nodes represent topics and edges represent high-similarity relationships, following which community detection algorithms are applied to this network to reveal clusters of related topics, i.e. the semantic clusters. The implementation can be found in `src/topic models/topic_clustering.ipynb`.
 
 ## Section 4: Findings
 
@@ -86,11 +86,11 @@ While the overall toxicity scores across the three subreddits remain relatively 
 
 ![Figure 1. Overall Toxicity Trend](<images/Overall Toxicity Trend.png>)
 
-Post Topic Clustering step, the average toxicity scores across the posts in each cluster are calculated. Certain themes such as "police" and "drugs" are found to be associated with higher toxicity. Interestingly, seemingly neutral themes related such as "football" and "jokes" also make appearance in the top 10 toxic clusters.
+After the topic clustering step, we calculate the average toxicity scores for posts within each cluster. Certain themes, such as "police" and "drugs," are notably associated with higher toxicity. Interestingly, seemingly neutral themes like "football" and "jokes" also appear among the top 10 clusters with elevated toxicity levels.
 
 ![Table 1. Top 10 Toxic Topic Clusters](<images/top10 table.png>)
 
-Looking at the toxicity evolution trends of the different clusters, one finding is that wage- (Cluster 28) and lgbtq- (Cluster 31) related topics exhibit consistently elevated scores. It is also worth mentioning that lgbtq-related topics exhibit a rise in toxicity over time as indicated by the increasing height of the spikes in the lightblue line. 
+Examining the toxicity trends across different clusters, we find that topics related to **wages (Cluster 28)** and **LGBTQ+ issues (Cluster 31)** consistently show elevated toxicity scores. Notably, LGBTQ+-related topics display a rising trend in toxicity over time, as seen in the increasing peaks of the light-blue line. 
 
 ![Figure 2. Toxicity Evolution of Top 10 Toxic Topics](<images/top10 time graph.png>)
 
@@ -139,7 +139,7 @@ Making API calls to Reddit to obtain real-time data on toxicity would allow for 
 
 #### Possible Future Enhancements
 ##### 1. Parameter Tuning on BERTopic Model
-As mentioned in Section 4.1, the initial coherence score of 0.33, though fair and sufficient for capturing key topic structures, left some room for improvement. To enhance topic coherence, we experimented with parameter tuning on the BERTopic Model again using data from (`2023-10`) as a sample. We adjusted key parameters within the vectorizer model, dimensionality reduction via UMAP, and clustering thresholds. By modifying `min_df`, `max_df`, and the `ngram_range` for the vectorizer, we targeted a balance between general and specific terms. Similarly, adjustments to `n_neighbors` and `min_dist` in UMAP helped create more distinct clusters, enhancing interpretability. This configuration has helped the coherence score increase to 0.422 and the implementation can be found in `src/topic models/improvement_on_coherence_score.ipynb`.
+As mentioned in Section 4.1, the initial coherence score of 0.33, though fair and sufficient for capturing key topic structures, left some room for improvement. To enhance topic coherence, we experimented with parameter tuning on the BERTopic Model again using data from (`2023-10`) as a sample. We adjusted key parameters within the vectorizer model, dimensionality reduction via UMAP, and clustering thresholds. By modifying `min_df`, `max_df`, and the `ngram_range` for the vectorizer, we targeted a balance between general and specific terms. Similarly, adjustments to `n_neighbors` and `min_dist` in UMAP helped create more distinct clusters, enhancing interpretability. This configuration has helped the coherence score increase to 0.42 and the implementation can be found in `src/topic models/improvement_on_coherence_score.ipynb`.
 
 However, due to the large size of the dataset and time constraints, we chose not to apply the revised configuration across the entire dataset. Running the full tuning process for every subset would be computationally intensive, potentially requiring substantial processing time and resources beyond our current capacity. The current coherence score of 0.33 strikes a practical balance between specificity and efficiency for our initial analysis.
 ##### 2. Fine-tune Models to Singapore-Specific Context
