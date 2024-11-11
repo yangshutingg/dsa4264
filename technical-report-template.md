@@ -121,15 +121,15 @@ To analyse toxicity across different themes within Reddit posts, related topics 
 
 *Interpretability methods like LIME or SHAP should also be reported here, using the appropriate tables or charts.*
 
-From our results, we found that while the overall toxicity scores across the 3 subreddits remain relatively low at around 0.1, we see a gradual increase from 2020 to 2023, with a significant spike in October 2023. 
+From our results, we found that while the overall toxicity scores across the three subreddits remain relatively low at around 0.06, we see a gradual increase from 2020 to 2023, with a significant spike in October 2023. 
 
 ![Figure 1. Overall Toxicity Trend](<images/Overall Toxicity Trend.png>)
 
-Within this trend, certain themes are frequently associated with higher toxicity. Topics like “crime,” “LGBTQ,” “politics,” “immigration,” and “race” exhibit consistently elevated scores. Interestingly, seemingly neutral terms related to family, such as “marriage,” “parenthood,” and “pregnancy,” also show a correlation with higher toxicity.
+Post Topic Clustering step, the average toxicity scores across the posts in each cluster are calculated. Certain themes such as "police" and "drugs" are found to be associated with higher toxicity. Interestingly, seemingly neutral themes related such as "football" and "jokes" also make appearance in the top 10 toxic clusters.
 
 ![Table 1. Top 10 Toxic Topic Clusters](<images/top10 table.png>)
 
-The topics related to LGBTQ+ have also seen a rise in toxicity over time as shown by the light blue line below (Cluster 31).
+Looking at the toxicity evolution trends of the different clusters, one finding is that wage- (Cluster 28) and lgbtq- (Cluster 31) related topics exhibit consistently elevated scores. It is also worth mentioning that lgbtq-related topics exhibit a rise in toxicity over time as indicated by the increasing height of the spikes in the lightblue line. 
 
 ![Figure 2. Toxicity Evolution of Top 10 Toxic Topics](<images/top10 time graph.png>)
 
