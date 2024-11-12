@@ -134,10 +134,10 @@ Firstly, we would recommend implementing this model in a production environment 
 Given the prevalence of toxic content and the particular risk it poses to younger audiences, implementing an age limit verification feature on these subreddits or urging Reddit to do so would help shield minors from harmful content. This feature could prompt users to confirm their age before accessing certain threads with higher probability of high toxicity score, thereby potentially reducing exposure among younger demographics.
 #### 3. Establish a Support Hotline for Minority Groups
 Our analysis shows that the LGBTQ+ community as well as foreigners may be disproportionately affected by toxic content. Setting up an integrated platform where minority group members can provide feedback, report content, or seek support would create a channel for direct communication and assistance. This platform could offer psychological support and practical resources for anyone affected by hate speech or needs someone to talk to about their experiences on Reddit. 
-#### 4. Public Service Announcement (PSA) for Elevated Toxicity Levels
-If the model detects a sustained increase in toxicity over time, a parliamentary address could be made to raise awareness about the issue and encourage respectful discourse. Such a discourse could emphasise the importance of digital responsibility, especially in sensitive discussions affecting public morale. This approach helps manage public perception and actively reminds users of the importance of positive online behaviour.
-#### 5. Integrate Real-Time Monitoring with Reddit via API
+#### 4. Integrate Real-Time Monitoring with Reddit via API
 Making API calls to Reddit to obtain real-time data on toxicity would allow for a continuous, updated analysis of trends and behaviours on Singapore subreddits. This integration would provide MDDI with a real time update of relevant data and enable more timely interventions.
+#### 5. Public Service Announcement (PSA) for Elevated Toxicity Levels
+If the model detects a sustained increase in toxicity over time, a parliamentary address could be made to raise awareness about the issue and encourage respectful discourse. Such a discourse could emphasise the importance of digital responsibility, especially in sensitive discussions affecting public morale. This approach helps manage public perception and actively reminds users of the importance of positive online behaviour.
 
 #### Possible Future Enhancements
 ##### 1. Parameter Tuning on BERTopic Model
