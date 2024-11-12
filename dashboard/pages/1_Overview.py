@@ -61,6 +61,7 @@ st.title("Overall Analysis")
 # Tabs
 tab1, tab2 = st.tabs(["Trend Analysis", "Cluster Analysis"])
 
+# Tab 1: Pverall Sentiment Trend Analysis
 with tab1:
     st.subheader("Toxicity Over Time")
 
@@ -104,6 +105,7 @@ with tab1:
     
     st.plotly_chart(fig, use_container_width=True)
 
+# Tab 2: Clustering Analysis of Topics
 with tab2:
     st.subheader("Topic Clustering")
     
@@ -152,7 +154,7 @@ with tab2:
 st.header("Insights")
 with st.expander("See detailed insights"):
     st.write("""
-    1. Political discussions show highest correlation with toxic comments
-    2. Weekday evenings show peak toxicity levels
-    3. Certain topics consistently trigger negative responses
+    1. Overall toxicity score has been increasing over time, with the biggest uptick in Oct 2023.
+    2. Cluster 31 (LGBTQ-related topics) has consistent appearance and shows increasing toxicity over time.
+    3. Cluster 28 (wage & employment-related topics) has the highest peak among all clusters and makes consistent appearance over time.
     """)
