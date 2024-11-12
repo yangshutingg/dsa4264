@@ -18,3 +18,13 @@ To get started, clone this repository and install the required packages:
 git clone https://github.com/yangshutingg/dsa4264.git
 cd dsa4264
 pip install -r dashboard/requirements.txt
+```
+
+## How to Run the Interactive Streamlit Dashboard
+
+To visualize the analysis results, you can run the interactive Streamlit dashboard. If you are in the root directory of the project:
+
+```bash
+cd dashboard
+streamlit run Home.py
+```
