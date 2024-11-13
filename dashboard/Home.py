@@ -90,36 +90,28 @@ def process_metrics(filepath):
         return None
     
 @st.cache_data
-def load_time_metrics(processed_data_dir='data', target_month='2023-01'):
-    """Calculate time metrics for specified month"""
+@st.cache_data
+def load_time_metrics(hourly_filepath='data/hourly_metrics.csv', 
+                      daily_filepath='data/daily_metrics.csv', 
+                      peaks_filepath='data/peak_hours.csv'):
+    """Calculate time metrics from CSV files."""
     try:
-        # Read the base dataset that includes time information
-        # You'll need a dataset that includes hour and day information
-        # This is a placeholder structure - adjust column names based on your actual data
-        hourly_metrics = pd.DataFrame({
-            'hour': range(24),
-            'post_count': [100, 80, 60, 40, 30, 25, 35, 50, 120, 200, 250, 300, 
-                          350, 330, 310, 290, 270, 250, 230, 200, 180, 160, 140, 120],
-            'average_toxicity': [0.05, 0.04, 0.04, 0.03, 0.03, 0.03, 0.04, 0.05, 0.06, 0.06, 0.07, 0.07,
-                               0.07, 0.07, 0.06, 0.06, 0.06, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05, 0.05]
-        })
+        # Load hourly metrics
+        hourly_metrics = pd.read_csv(hourly_filepath)
         
-        # Calculate daily metrics
-        daily_metrics = pd.DataFrame({
-            'day': ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-            'post_count': [5000, 4800, 4900, 5100, 5300, 4500, 4200],
-            'post_percent': [14.8, 14.2, 14.5, 15.1, 15.7, 13.3, 12.4]
-        })
+        # Ensure the hour column is numeric
+        hourly_metrics['hour'] = pd.to_numeric(hourly_metrics['hour'], errors='coerce').fillna(0).astype(int)
         
-        # Calculate peak hours
-        peaks = pd.DataFrame({
-            'metric': ['posts', 'toxicity'],
-            'peak_hour': [14, 11],  # Hours with highest activity/toxicity
-            'peak_value': [350, 0.07],  # Peak values
-            'lowest_hour': [5, 4],  # Hours with lowest activity/toxicity
-            'lowest_value': [25, 0.03]  # Lowest values
-        })
+        # Load daily metrics
+        daily_metrics = pd.read_csv(daily_filepath)
         
+        # Load peaks data
+        peaks = pd.read_csv(peaks_filepath)
+
+        # Ensure proper formatting for peaks data
+        peaks['peak_hour'] = peaks['peak_hour'].astype(int)
+        peaks['lowest_hour'] = peaks['lowest_hour'].astype(int)
+
         return {
             'hourly': hourly_metrics,
             'daily': daily_metrics,
