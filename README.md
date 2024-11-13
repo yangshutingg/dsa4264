@@ -26,9 +26,49 @@ git clone https://github.com/yangshutingg/dsa4264.git
 cd dsa4264
 pip install -r dashboard/requirements.txt
 ```
+Create a `data` folder in the root directory, verify the directory organisation:
 
-## Running the Interactive Streamlit Dashboard
+```plaintext
+DSA4264/
+├── dashboard/               # Dashboard codes, to be further illustrated in later section
+├── data/                    # Data folder to place your downloaded data here
+├── report/                  # Final reports and documentation
+├── src/                     # Source code 
+│   ├── topic models/
+│   │   ├── parameter_tuning.ipynb # Requires combined_data_scores.csv
+│   │   ├── topic_clustering.ipynb # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, generates topic_clusters.csv
+│   │   ├── topic_modelling.ipynb  # Requires combined_data_scores.csv
+│   │   ├── topic_network.ipynb    # Requires topic_clusters.csv
+│   ├── toxicity models/
+│   │   ├── data_processing.ipynb  # Requires original datasets, combined_data.csv, hatebert_scores.csv, hateXplain_scores.csv, toxicbert_scores.csv,
+                                   # generates combined_data_scores.csv
+│   │   ├── trend_analysis.ipynb   # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, combined_data_scores.csv
+├── .gitignore              
+├── README.md                
+```
+Before running the analysis, ensure the following data files are available in the `data/` directory.
 
+```plaintext
+data/
+├── combined_data.csv
+├── combined_data_scores.csv
+├── daily_metrics.csv
+├── dashboard_topic_metrics.json
+├── hourly_metrics.csv
+├── monthly_metrics.csv
+├── monthly_scores_summary.csv
+├── monthly_summary.csv
+├── peak_hours.csv
+├── top10_topics.csv
+├── topic_clusters.csv
+├── topics_2020.csv
+├── topics_2021.csv
+├── topics_2022.csv
+├── topics_2023.csv
+├── hatebert_scores.csv
+├── hateXplain_scores.csv
+├── toxicbert_scores.csv
+```
 ## Running the Interactive Streamlit Dashboard
 
 To view the analysis results interactively, please verify the data structure of the `dashboard` folder:
