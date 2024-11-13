@@ -10,7 +10,7 @@ import os
 @st.cache_data
 def load_monthly_summary():
     try:
-        file_path = '../data/monthly_scores_summary.csv'
+        file_path = 'data/monthly_scores_summary.csv'
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"{file_path} not found.")
         
@@ -26,7 +26,7 @@ def load_monthly_summary():
 @st.cache_data
 def load_topic_clusters_data():
     try:
-        file_path = '../data/topic_clusters.csv'
+        file_path = 'data/topic_clusters.csv'
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"{file_path} not found.")
         
@@ -40,7 +40,7 @@ def load_topic_clusters_data():
 @st.cache_data
 def load_top10_topics_data():
     try:
-        file_path = '../data/top10_topics.csv'
+        file_path = 'data/top10_topics.csv'
         if not os.path.exists(file_path):
             raise FileNotFoundError(f"{file_path} not found.")
         
