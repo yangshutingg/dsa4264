@@ -2,7 +2,7 @@
 Members: Bernice Ong Hwee Yee, Cao Han, Luo Xinming, Su Xuanxuan, Yang Shu Ting
 
 ## Project Overview
-This project focuses on analyzing toxicity (Content that is rude, disrespectful, or otherwise likely to make someone leave a discussion) in Singapore Subreddits text data to uncover insights and patterns. Using natural language processing (NLP) techniques, we process, analyze, and visualize text data to identify sentiment trends and key topic clusters.
+This project focuses on analysing toxicity (content that is rude, disrespectful, or otherwise likely to make someone leave a discussion) in Singapore Subreddits text data to uncover insights and patterns. Using natural language processing (NLP) techniques, we process, analyse, and visualise text data to identify sentiment trends and key topic clusters.
 
 ## Data Access
 To run the entire project, you’ll need, at a minimum, a raw data file with the columns: `timestamp`, `link`, and `text`, saved within your project’s `data` subfolder. For running individual scripts, ensure you have access to any necessary intermediate data files.
@@ -12,11 +12,11 @@ Please note that the raw data used in this project is restricted and not publicl
 Thank you for your cooperation!
 
 ## Results
-After running the analysis, key findings and visualizations are available in the dashboard folder. These include:
+Upon completing the analysis, the key findings and visualisations are accessible in the dashboard folder, including:
 
-- Topic clusters and keywords
-- Sentiment trends over time
-- Topic networks clouds
+- Topic Clusters and Keywords: Identified thematic clusters and representative keywords.
+- Sentiment Trends Over Time: Patterns of toxicity and sentiment changes across the analysed period.
+- Topic Network Clouds: Visualisations of topic relationships and high-similarity themes.
 
 ## Installation
 To get started, clone this repository and install the required packages:
@@ -27,9 +27,9 @@ cd dsa4264
 pip install -r dashboard/requirements.txt
 ```
 
-## How to Run the Interactive Streamlit Dashboard
+## Running the Interactive Streamlit Dashboard
 
-To visualize the analysis results, you can run the interactive Streamlit dashboard. If you are in the root directory of the project:
+To view the analysis results interactively, launch the Streamlit dashboard from the project’s root directory:
 
 ```bash
 cd dashboard
