@@ -284,7 +284,7 @@ if topic_metrics:
                         </tr>
                         <tr>
                             <td style='padding: 8px 15px; white-space: nowrap;'><strong>Change:</strong></td>
-                            <td style='padding: 8px 15px; color: {"green" if topic["post_change"] > 0 else "red"};'>
+                            <td style='padding: 8px 15px; color: {"red" if topic["post_change"] > 0 else "green"};'>
                                 {topic["post_change"]:+.1f}%
                             </td>
                         </tr>
