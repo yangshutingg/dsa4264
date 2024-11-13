@@ -3,171 +3,158 @@ import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
 import numpy as np
-from datetime import datetime, timedelta
+import os
+# from datetime import datetime, timedelta
 
-# Generate sample data for demonstration
+# Define Handles
 @st.cache_data
-def generate_sample_data():
-    # Date range
-    dates = pd.date_range(start='2023-01-01', end='2024-01-01', freq='M')
+def load_monthly_summary():
+    try:
+        file_path = '../data/monthly_scores_summary.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
+        
+        df = pd.read_csv(file_path)
+        df['yearmonth'] = pd.to_datetime(df['yearmonth'])
+        df['year'] = df['yearmonth'].dt.year
+        df['month'] = df['yearmonth'].dt.month
+        return df
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
+
+@st.cache_data
+def load_topic_clusters_data():
+    try:
+        file_path = '../data/topic_clusters.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
+        
+        df = pd.read_csv(file_path)
+        df = df.sort_values(by='avg_toxicity', ascending=False) 
+        return df
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
     
-    # Sample topics
-    topics = ['Politics', 'Housing', 'Education', 'COVID', 'Economy', 'Transportation']
-    
-    # Create sample data
-    data = pd.DataFrame({
-        'date': dates,
-        'toxicity_score': np.random.rand(len(dates)) * 0.5 + 0.2,
-        'political_posts': np.random.randint(100, 200, size=len(dates)),
-        'total_posts': np.random.randint(500, 1000, size=len(dates))
-    })
-    
-    # Create topic distribution
-    topic_data = pd.DataFrame({
-        'topic': topics,
-        'percentage': np.random.dirichlet(np.ones(len(topics))) * 100,
-        'toxicity': np.random.rand(len(topics)) * 0.5 + 0.2
-    })
-    
-    return data, topic_data
+@st.cache_data
+def load_top10_topics_data():
+    try:
+        file_path = '../data/top10_topics.csv'
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"{file_path} not found.")
+        
+        df = pd.read_csv(file_path)
+        return df
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
+        return None
 
-# Load sample data
-data, topic_data = generate_sample_data()
+# Load data
+monthly_summary = load_monthly_summary()
+topic_clusters = load_topic_clusters_data()
+top10_topics = load_top10_topics_data()
 
-# Title is already set in Home.py
-st.title("Overview Dashboard")
+# Title
+st.title("Overall Analysis")
 
-# Sidebar filters
-st.sidebar.header("Filters")
+# Tabs
+tab1, tab2 = st.tabs(["Trend Analysis", "Cluster Analysis"])
 
-# Time range filter
-# Modify the time range selection part
-# Instead of setting session state after selection, initialize it first
-
-# Initialize session state if needed
-if 'time_range' not in st.session_state:
-    st.session_state['time_range'] = "Last 1 year"
-if 'subreddits' not in st.session_state:
-    st.session_state['subreddits'] = ["r/Singapore"]
-
-# Use session state in the selectbox
-time_range = st.sidebar.selectbox(
-    "Time Range",
-    ["Last 6 months", "Last 1 year", "Last 2 years", "All time"],
-    index=["Last 6 months", "Last 1 year", "Last 2 years", "All time"].index(st.session_state['time_range'])
-)
-
-# Update session state through callback
-if time_range != st.session_state['time_range']:
-    st.session_state['time_range'] = time_range
-
-# Similarly for subreddit selection
-subreddit = st.sidebar.multiselect(
-    "Subreddit",
-    ["r/Singapore", "r/SingaporeRaw", "r/SingaporeHappenings"],
-    default=st.session_state['subreddits']
-)
-
-if subreddit != st.session_state['subreddits']:
-    st.session_state['subreddits'] = subreddit
-
-# Store in session state for other pages
-st.session_state['time_range'] = time_range
-
-
-# Create three columns for metrics
-col1, col2, col3 = st.columns(3)
-
-with col1:
-    st.metric(
-        label="Overall Toxicity Trend",
-        value="+23%",
-        delta="2.1%"
-    )
-
-with col2:
-    st.metric(
-        label="Most Active Topics",
-        value="Politics",
-        delta="34% of discussions"
-    )
-
-with col3:
-    st.metric(
-        label="High Risk Topics",
-        value="3 detected",
-        delta="Foreign Policy, Race Relations, COVID"
-    )
-
-# Tabs using streamlit
-tab1, tab2, tab3 = st.tabs(["Timeline Analysis", "Topic Analysis", "Correlation Analysis"])
-
+# Tab 1: Pverall Sentiment Trend Analysis
 with tab1:
     st.subheader("Toxicity Over Time")
-    
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(
-        x=data['date'],
-        y=data['toxicity_score'],
-        name='Toxicity Score'
-    ))
-    
-    fig.add_trace(go.Scatter(
-        x=data['date'],
-        y=data['political_posts']/1000,
-        name='Political Posts (K)',
-        yaxis='y2'
-    ))
-    
-    fig.update_layout(
-        title='Toxicity Score vs Political Posts',
-        yaxis=dict(title='Toxicity Score'),
-        yaxis2=dict(title='Posts (K)', overlaying='y', side='right')
+
+    # Time Range Filter
+    start_date, end_date = st.slider(
+        "Select Date Range",
+        min_value = monthly_summary['yearmonth'].min().date(),
+        max_value = monthly_summary['yearmonth'].max().date(),
+        value = (monthly_summary['yearmonth'].min().date(), 
+                monthly_summary['yearmonth'].max().date()),
+        format = "YYYY-MM"
     )
+
+    filtered_df = monthly_summary[(monthly_summary['yearmonth'].dt.date >= start_date) & 
+                                  (monthly_summary['yearmonth'].dt.date <= end_date)]
+    
+    yearmonth = filtered_df['yearmonth']
+    ave_score = filtered_df['average_toxicity_score_mean'].round(3)
+
+    fig = go.Figure()
+
+    fig.add_trace(go.Scatter(
+        x = yearmonth, 
+        y = ave_score, 
+        name = 'Toxicity Score'
+    ))
+
+    slope, intercept = np.polyfit(yearmonth.map(pd.Timestamp.toordinal), ave_score, 1)
+    best_fit_line = slope * yearmonth.map(pd.Timestamp.toordinal) + intercept
+
+    fig.add_trace(go.Scatter(
+        x = yearmonth,
+        y = best_fit_line,
+        mode='lines',
+        name='Best Fit Line',
+        line=dict(dash='dash') 
+        ))
+
+    fig.update_yaxes(range=[0, 0.1],
+                     title_text="Average Toxicity Score") 
     
     st.plotly_chart(fig, use_container_width=True)
 
+# Tab 2: Clustering Analysis of Topics
 with tab2:
-    st.subheader("Topic Distribution")
+    st.subheader("Topic Clustering")
     
-    # Create a treemap for topic distribution
     fig_tree = px.treemap(
-        topic_data,
-        path=['topic'],
-        values='percentage',
-        color='toxicity',
+        topic_clusters,
+        path=["cluster_id"],
+        values="total_posts",
+        color="avg_toxicity",
         color_continuous_scale='RdYlBu_r',
-        title='Topic Distribution and Toxicity'
+        title='Cluster Distribution'
+    )
+
+    fig_tree.update_traces(
+        hovertemplate=(
+            "<b>Cluster ID:</b> %{label}<br>" +
+            "<b>Total Posts:</b> %{value:,} posts<br>" +               # Format as integer with comma
+            "<b>Unique Keywords:</b> %{customdata[3]}<br>" +           # Format as integer with comma
+            "<b>Topic Diversity:</b> %{customdata[4]:.2f}<br>" +       # Format as decimal with 2 places
+            "<b>Average Toxicity:</b> %{color:.2f}"                    # Format as decimal with 2 places
+        ),
+        customdata = topic_clusters.values
     )
     st.plotly_chart(fig_tree, use_container_width=True)
 
-with tab3:
-    st.subheader("Correlation Analysis")
+    st.subheader("Top 10 Topic Clusters by Average Toxicity")
+    st.write(topic_clusters[['avg_toxicity', 'unique_keywords']].head(10))
+
+    st.subheader("Toxicity Evolution of the Top 10 Topics by Average Toxicity")
+    fig = go.Figure()
+    top10_topic_avg_toxicity = top10_topics.groupby(['cluster_id', 'date'])['avg_toxicity'].mean().reset_index()
+    top10_topic_avg_toxicity = top10_topic_avg_toxicity.pivot(index='date', columns='cluster_id', values='avg_toxicity')
+    for cluster_id in top10_topic_avg_toxicity.columns:
+        fig.add_trace(go.Scatter(
+            x = top10_topic_avg_toxicity.index,
+            y = top10_topic_avg_toxicity[cluster_id],
+            mode='lines',
+            name=f"Cluster {cluster_id}"
+        ))
+
+    fig.update_yaxes(range=[0, 0.55], title_text="Average Toxicity Score")
     
-    # Create correlation heatmap
-    correlation_data = pd.DataFrame({
-        'Toxicity': np.random.rand(100),
-        'Post Length': np.random.rand(100),
-        'Comments': np.random.rand(100),
-        'Time of Day': np.random.rand(100)
-    })
-    
-    fig_corr = px.imshow(
-        correlation_data.corr(),
-        title='Feature Correlations',
-        color_continuous_scale='RdBu'
-    )
-    st.plotly_chart(fig_corr, use_container_width=True)
+    st.plotly_chart(fig)
+
 
 # Key Insights section
-st.header("Key Insights")
+st.header("Insights")
 with st.expander("See detailed insights"):
     st.write("""
-    1. Political discussions show highest correlation with toxic comments
-    2. Weekday evenings show peak toxicity levels
-    3. Certain topics consistently trigger negative responses
+    1. Overall toxicity score has been increasing over time, with the biggest uptick in Oct 2023.
+    2. Cluster 31 (LGBTQ-related topics) has consistent appearance and shows increasing toxicity over time.
+    3. Cluster 28 (wage & employment-related topics) has the highest peak among all clusters and makes consistent appearance over time.
     """)
-
-# Add a link to the detailed analysis
-st.sidebar.markdown("---")
-st.sidebar.markdown("👉 Check out the [Detailed Analysis](/Detailed_Analysis) for more insights!")
