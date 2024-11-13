@@ -78,8 +78,6 @@ For this, we used a sample month’s data (`2023-10`) to evaluate the coherence 
 #### Topic Clustering
 To analyse toxicity across different themes within Reddit posts, related topics are grouped into clusters with the in-cluster toxicity level over time examined. This process consists of four main steps. First, textual topic data are converted into TF-IDF vectors to capture the importance of terms while considering both individual words and bigrams. Then, nearest neighbor analysis with cosine similarity is used to identify similar topics based on vectorized keywords. The next step is building a graph where nodes represent topics and edges represent high-similarity relationships, following which community detection algorithms are applied to this network to reveal clusters of related topics, i.e. the semantic clusters. The implementation can be found in `src/topic models/topic_clustering.ipynb`.
 
-To ensure the quality and relevance of the clusters, we used **topic diversity** as an additional evaluation metric. Topic diversity measures the range of unique keywords within each cluster, giving us a sense of how broad or specific each cluster is. Our analysis showed a mean topic diversity score of 2.31, which suggests that clusters contain a fairly diverse set of terms. This diversity allows each cluster to capture a broad range of ideas while still being coherent, as reflected by the coherence scores. By including topic diversity, we can better understand if our clusters are well-balanced in representing both focused and broader themes. This evaluation can also be found in `src/topic models/topic_clustering.ipynb`.
-
 ## Section 4: Findings
 
 ### 4.1 Results
