@@ -41,7 +41,8 @@ dashboard/
 │   ├── 2_Detailed_Analysis.py  # Detailed analysis page for the dashboard
 ├── scripts/
 │   ├── Home.py           # Main entry point for the dashboard
-├── requirements.txt      # Dependencies for the project
+├── requirements.txt      # Ensure packages are installed
+```
 
 And launch the Streamlit dashboard from the project’s root directory:
 
