@@ -4,6 +4,9 @@ Members: Bernice Ong Hwee Yee, Cao Han, Luo Xinming, Su Xuanxuan, Yang Shu Ting
 ## Project Overview
 This project focuses on analyzing toxicity (Content that is rude, disrespectful, or otherwise likely to make someone leave a discussion) in Singapore Subreddits text data to uncover insights and patterns. Using natural language processing (NLP) techniques, we process, analyze, and visualize text data to identify sentiment trends and key topic clusters.
 
+## Data
+Ensure that your raw data set has minimally the three columns, `timestamp`, `link`, `text` and is saved in your own `data` subfolder. 
+
 ## Results
 After running the analysis, key findings and visualizations are available in the dashboard folder. These include:
 
