@@ -12,11 +12,11 @@ Please note that the raw data used in this project is restricted and not publicl
 Thank you for your cooperation!
 
 ## Results
-Upon completing the analysis, the key findings and visualisations are accessible in the dashboard folder, including:
+Upon completing the analysis, the key findings and visualisations are accessible in the `dashboard/` folder, including:
 
 - Monthly Toxicity Metrics: A summary of key metrics providing an overview of toxicity trends across months, helping to assess the general health of discussions.
 - Temporal Analysis: Analyzes patterns in toxicity scores to uncover time-specific variations, enabling insights into temporal dynamics.
-- Topic Network: isualizations depicting relationships between topics, highlighting high-similarity themes and clusters to understand how discussions are interconnected.
+- Topic Network: visualizations depicting relationships between topics, highlighting high-similarity themes and clusters to understand how discussions are interconnected.
 
 For experiment designs and detailed results discussions, please find in our `report/technical-report.md`.
 
