@@ -15,8 +15,8 @@ Thank you for your cooperation!
 Upon completing the analysis, the key findings and visualisations are accessible in the `dashboard/` folder, including:
 
 - Monthly Toxicity Metrics: A summary of key metrics providing an overview of toxicity trends across months, helping to assess the general health of discussions.
-- Temporal Analysis: Analyzes patterns in toxicity scores to uncover time-specific variations, enabling insights into temporal dynamics.
-- Topic Network: visualizations depicting relationships between topics, highlighting high-similarity themes and clusters to understand how discussions are interconnected.
+- Temporal Analysis: Analyses patterns in toxicity scores to uncover time-specific variations, enabling insights into temporal dynamics.
+- Topic Network: Visualisations depicting relationships between topics, highlighting high-similarity themes and clusters to understand how discussions are interconnected.
 
 For experiment designs and detailed results discussions, please find in our `report/technical-report.md`.
 
