@@ -77,7 +77,7 @@ data/
 ```
 ## Running the Interactive Streamlit Dashboard
 
-To view the analysis results interactively, please verify the data structure of the `dashboard` folder:
+To view the analysis results interactively, create a `graph` folder inside the `dashboard` folder and verify the data structure of the `dashboard` folder:
 
 ```plaintext
 dashboard/
