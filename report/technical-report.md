@@ -78,6 +78,8 @@ For this, we used a sample month’s data (`2023-10`) to evaluate the coherence 
 #### Topic Clustering
 To analyse toxicity across different themes within Reddit posts, related topics are grouped into clusters with the in-cluster toxicity level over time examined. This process consists of four main steps. First, textual topic data are converted into TF-IDF vectors to capture the importance of terms while considering both individual words and bigrams. Then, nearest neighbor analysis with cosine similarity is used to identify similar topics based on vectorized keywords. The next step is building a graph where nodes represent topics and edges represent high-similarity relationships, following which community detection algorithms are applied to this network to reveal clusters of related topics, i.e. the semantic clusters. The implementation can be found in `src/topic models/topic_clustering.ipynb`.
 
+To ensure the quality and relevance of the clusters, we used topic diversity as an additional evaluation metric. Topic diversity measures the range of unique keywords within each cluster, giving us a sense of how broad or specific each cluster is. By including topic diversity, we can better understand if our clusters are well-balanced in representing both focused and broader themes. This evaluation can also be found in `src/topic models/topic_clustering.ipynb`.
+
 ## Section 4: Findings
 
 ### 4.1 Results
@@ -85,12 +87,6 @@ To analyse toxicity across different themes within Reddit posts, related topics 
 While the overall toxicity scores across the three subreddits remain relatively low at around 0.06, there is a gradual increase from 2020 to 2023, with a significant spike in October 2023. 
 
 ![Figure 1. Overall Toxicity Trend](<images/Overall Toxicity Trend.png>)
-
-In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis.
-
-| Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score |
-| :---:   | :----:               | :----:                 | :----:                        | :----:          |
-| BERTopic| KeyBERTInspired      | 800                    | 56                            | 0.33            |
 
 After the topic clustering step, we calculate the average toxicity scores for posts within each cluster. Certain themes, such as "police" and "drugs," are notably associated with higher toxicity. Interestingly, seemingly neutral themes like "football" and "jokes" also appear among the top 10 clusters with elevated toxicity levels.
 
@@ -100,7 +96,11 @@ Examining the toxicity trends across different clusters, we find that topics rel
 
 ![Figure 2. Toxicity Evolution of Top 10 Toxic Topics](<images/top10 time graph.png>)
 
-To ensure the quality and relevance of the clusters, we used **topic diversity** as an additional evaluation metric. Topic diversity measures the range of unique keywords within each cluster, giving us a sense of how broad or specific each cluster is. Our analysis showed a mean topic diversity score of 2.31, which suggests that clusters contain a fairly diverse set of terms. This diversity allows each cluster to capture a broad range of ideas while still being coherent, as reflected by the coherence scores. By including topic diversity, we can better understand if our clusters are well-balanced in representing both focused and broader themes. This evaluation can also be found in `src/topic models/topic_clustering.ipynb`.
+ In our chosen configuration, the coherence score for October 2023 was 0.33, reflecting moderate alignment between extracted topics and actual themes. This indicates that while the model successfully identified meaningful, though somewhat broad, relationships among topic words, there remains room for further tuning. Nonetheless, this score offers a reasonable baseline for our initial analysis. Furthermore, our analysis showed a mean topic diversity score of 2.31, which suggests that clusters contain a fairly diverse set of terms. This diversity allows each cluster to capture a broad range of ideas while still being coherent, as reflected by the coherence scores.
+
+| Model   | Representation Model | Total Number of Topics | Total Number of Useful Topics | Coherence Score | Topic Diversity |
+| :---:   | :----:               | :----:                 | :----:                        | :----:          | :----:          |
+| BERTopic| KeyBERTInspired      | 800                    | 56                            | 0.33            | 2.31            |
 
 ### 4.2 Discussion
 
