@@ -40,13 +40,16 @@ DSA4264/
 │   │   ├── topic_modelling.ipynb  # Requires combined_data_scores.csv
 │   │   ├── topic_network.ipynb    # Requires topic_clusters.csv
 │   ├── toxicity models/
-│   │   ├── data_processing.ipynb  # Requires original datasets, combined_data.csv, hatebert_scores.csv, hateXplain_scores.csv, toxicbert_scores.csv,
+│   │   ├── hatebert_model.ipynb   # Requires combined_data.csv, generates hatebert_scores.csv
+│   │   ├── hateXplain_model.ipynb # Requires combined_data.csv, generates hateXplain_scores.csv
+│   │   ├── toxicbert_model.ipynb  # Requires combined_data.csv, generates toxicbert_scores.csv
+│   ├── data_processing.ipynb      # Requires original datasets, combined_data.csv, hatebert_scores.csv, hateXplain_scores.csv, toxicbert_scores.csv,
                                    # generates combined_data_scores.csv
-│   │   ├── trend_analysis.ipynb   # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, combined_data_scores.csv
+│   ├── trend_analysis.ipynb       # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, combined_data_scores.csv, generate monthly_scores_summary.csv
 ├── .gitignore              
 ├── README.md                
 ```
-Before running the analysis, ensure the following data files are available in the `data/` directory.
+Before running individual scripts, ensure the respective required data files are available in the `data/` directory.
 
 ```plaintext
 data/
@@ -76,11 +79,13 @@ To view the analysis results interactively, please verify the data structure of 
 ```plaintext
 dashboard/
 ├── graphs/               # Download graphs from drive and place them here
-├── pages/
-│   ├── 1_Overview.py     # Overview page for the dashboard
-│   ├── 2_Detailed_Analysis.py  # Detailed analysis page for the dashboard
-├── scripts/
-│   ├── Home.py           # Main entry point for the dashboard
+├── pages/                
+│   ├── 1_Overview.py     # Requires monthly_scores_summary.csv, topic_clusters.csv, top10_topics.csv
+│   ├── 2_Detailed_Analysis.py  # Requires graphs in graphs directory
+├── scripts/              # Intermediate preprocessing scripts, run in root directory
+│   ├── home_topic.py     # Requires topic_clusters.csv, generate dashboard_topic_metrics.json
+│   ├── time_metrics.py   # Requires combined_data_scores.csv, generate hourly_metrics.csv, daily_metrics.csv, peak_hours.csv
+├── Home.py               # Requires monthly_summary.csv, hourly_metrics.csv, daily_metrics.csv, peak_hours.csv, dashboard_topic_metrics.json
 ├── requirements.txt      # Ensure packages are installed
 ```
 
