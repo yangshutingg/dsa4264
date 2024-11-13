@@ -29,9 +29,19 @@ pip install -r dashboard/requirements.txt
 
 ## Running the Interactive Streamlit Dashboard
 
-To view the analysis results interactively, launch the Streamlit dashboard from the project’s root directory:
+To view the analysis results interactively, please verify the data structure of the `dashboard` folder:
+
+dashboard/
+├── graphs/ (download graphs from drive and place them here)
+├── pages/
+│   ├── 1_Overview.py
+│   ├── 2_Detailed_Analysis.py
+├── scripts/
+│   ├── Home.py
+├── requirements.txt
+
+And launch the Streamlit dashboard from the project’s root directory:
 
 ```bash
-cd dashboard
-streamlit run Home.py
+streamlit run dashboard/Home.py
 ```
