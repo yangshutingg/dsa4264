@@ -39,7 +39,7 @@ DSA4264/
 ├── src/                     # Source code 
 │   ├── topic models/
 │   │   ├── parameter_tuning.ipynb # Requires combined_data_scores.csv
-│   │   ├── topic_clustering.ipynb # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, generates topic_clusters.csv
+│   │   ├── topic_clustering.ipynb # Requires topics_2020.csv, topics_2021.csv, topics_2022.csv, topics_2023.csv, generates topic_clusters.csv
 │   │   ├── topic_modelling.ipynb  # Requires combined_data_scores.csv
 │   │   ├── topic_network.ipynb    # Requires topic_clusters.csv
 │   ├── toxicity models/
@@ -48,7 +48,7 @@ DSA4264/
 │   │   ├── toxicbert_model.ipynb  # Requires combined_data.csv, generates toxicbert_scores.csv
 │   ├── data_processing.ipynb      # Requires original datasets, combined_data.csv, hatebert_scores.csv, hateXplain_scores.csv, toxicbert_scores.csv,
                                    # generates combined_data_scores.csv
-│   ├── trend_analysis.ipynb       # Requires topic_2020.csv, topic_2021.csv, topic_2022.csv, topic_2023.csv, combined_data_scores.csv, generate monthly_scores_summary.csv
+│   ├── trend_analysis.ipynb       # Requires topics_2020.csv, topics_2021.csv, topics_2022.csv, topics_2023.csv, combined_data_scores.csv, generate monthly_scores_summary.csv
 ├── .gitignore              
 ├── README.md                
 ```
