@@ -5,12 +5,11 @@ Members: Bernice Ong Hwee Yee, Cao Han, Luo Xinming, Su Xuanxuan, Yang Shu Ting
 This project focuses on analyzing toxicity (Content that is rude, disrespectful, or otherwise likely to make someone leave a discussion) in Singapore Subreddits text data to uncover insights and patterns. Using natural language processing (NLP) techniques, we process, analyze, and visualize text data to identify sentiment trends and key topic clusters.
 
 ## Data Access
-To run the entire project, you should have minially a raw data file that contains three columns, `timestamp`, `link`, `text` and is saved in your own `data` subfolder. If you just want to run a specific script, ensure that you have access to the necessary (intermediate) data. 
+To run the dashboard for this project, you’ll need, at a minimum, a raw data file with the columns: `timestamp`, `link`, and `text`, saved within your project’s `data` subfolder. For running individual scripts, ensure you have access to any necessary intermediate data files.
 
-The raw data used in this project is not publicly available due to ownership restrictions. If you would like access to the data, please reach out directly to the data owner or organization responsible. If you have specific questions about the data or need processed examples for testing, feel free to open an issue in this repository, and we will do my best to assist within the guidelines allowed.
+Please note that the raw data used in this project is restricted and not publicly accessible due to ownership limitations. For data access requests, contact the respective data owner or organisation. If you have questions or need processed sample data for testing, feel free to open an issue in this repository. We’ll assist within the allowed guidelines.
 
-Thank you for understanding!
-
+Thank you for your cooperation!
 
 ## Results
 After running the analysis, key findings and visualizations are available in the dashboard folder. These include:
