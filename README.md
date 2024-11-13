@@ -14,9 +14,11 @@ Thank you for your cooperation!
 ## Results
 Upon completing the analysis, the key findings and visualisations are accessible in the dashboard folder, including:
 
-- Topic Clusters and Keywords: Identified thematic clusters and representative keywords.
-- Sentiment Trends Over Time: Patterns of toxicity and sentiment changes across the analysed period.
-- Topic Network Clouds: Visualisations of topic relationships and high-similarity themes.
+- Monthly Toxicity Metrics: A summary of key metrics providing an overview of toxicity trends across months, helping to assess the general health of discussions.
+- Temporal Analysis: Analyzes patterns in toxicity scores to uncover time-specific variations, enabling insights into temporal dynamics.
+- Topic Network: isualizations depicting relationships between topics, highlighting high-similarity themes and clusters to understand how discussions are interconnected.
+
+For experiment designs and detailed results discussions, please find in our `report/technical-report.md`.
 
 ## Installation
 To get started, clone this repository and install the required packages:
@@ -32,7 +34,8 @@ Create a `data` folder in the root directory, verify the directory organisation:
 DSA4264/
 ├── dashboard/               # Dashboard codes, to be further illustrated in later section
 ├── data/                    # Data folder to place your downloaded data here
-├── report/                  # Final reports and documentation
+├── report/                  
+│   ├── technical-report.md  # Project report
 ├── src/                     # Source code 
 │   ├── topic models/
 │   │   ├── parameter_tuning.ipynb # Requires combined_data_scores.csv
